@@ -1,0 +1,31 @@
+name: Gemini Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Gemini PR Reviewer
+        uses: fluxninja/openai-pr-reviewer@main
+        env:
+          OPENAI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        with:
+          debug: false
+          openai_base_url: https://generativelanguage.googleapis.com/v1beta/openai/
+          openai_model: gemini-1.5-flash
+          system_message: |
+            Eres un auditor senior de software. Revisa el código del Pull Request para una aplicación de escritorio en Python.
+            Verifica:
+            1. Ausencia de bugs y manejo seguro de datos (sin SQL directo en interfaces).
+            2. Cumplimiento de arquitectura limpia y principios SOLID.
+            3. Claridad y buenas prácticas.
+            Responde en español de forma directa, breve y constructiva.
