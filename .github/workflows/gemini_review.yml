@@ -4,28 +4,87 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   review:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-
-      - name: Gemini PR Reviewer
-        uses: fluxninja/openai-pr-reviewer@main
-        env:
-          OPENAI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         with:
-          debug: false
-          openai_base_url: https://generativelanguage.googleapis.com/v1beta/openai/
-          openai_model: gemini-1.5-flash
-          system_message: |
-            Eres un auditor senior de software. Revisa el código del Pull Request para una aplicación de escritorio en Python.
-            Verifica:
-            1. Ausencia de bugs y manejo seguro de datos (sin SQL directo en interfaces).
-            2. Cumplimiento de arquitectura limpia y principios SOLID.
-            3. Claridad y buenas prácticas.
-            Responde en español de forma directa, breve y constructiva.
+          fetch-depth: 0
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: pip install google-genai requests
+
+      - name: Ejecutar Auditoria con Gemini
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO_NAME: ${{ github.repository }}
+        run: |
+          python - << 'EOF'
+          import os
+          import subprocess
+          import requests
+          from google import genai
+
+          # 1. Obtener la diferencia de código (diff) frente a main
+          subprocess.run(["git", "fetch", "origin", "main"], check=True)
+          diff_process = subprocess.run(["git", "diff", "origin/main...HEAD"], capture_output=True, text=True)
+          diff_text = diff_process.stdout
+
+          if not diff_text.strip():
+              print("No se encontraron diferencias de código para analizar.")
+              exit(0)
+
+          # Truncar diff si es excesivamente grande
+          diff_text = diff_text[:20000]
+
+          # 2. Consultar a Gemini
+          client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+          prompt = f"""
+          Actúa como un auditor senior de software. Analiza las siguientes diferencias (git diff) de un Pull Request para una aplicación de heladería en Python:
+          
+          {diff_text}
+
+          Revisa:
+          1. Calidad del código y ausencia de bugs.
+          2. Cumplimiento de arquitectura limpia y principios SOLID.
+          3. Seguridad y consistencia en SQLite.
+          
+          Genera un resumen en Markdown directo, conciso y constructivo en español.
+          """
+
+          response = client.models.generate_content(
+              model="gemini-2.5-flash",
+              contents=prompt,
+          )
+
+          # 3. Publicar comentario en la Pull Request
+          pr_number = os.environ["PR_NUMBER"]
+          repo = os.environ["REPO_NAME"]
+          token = os.environ["GITHUB_TOKEN"]
+
+          url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
+          headers = {
+              "Authorization": f"Bearer {token}",
+              "Accept": "application/vnd.github.v3+json",
+          }
+          payload = {"body": f"### 🤖 Auditoría Automatizada con Gemini\n\n{response.text}"}
+
+          res = requests.post(url, json=payload, headers=headers)
+          if res.status_code == 201:
+              print("Auditoría publicada exitosamente en el PR.")
+          else:
+              print(f"Error al publicar comentario: {res.status_code} - {res.text}")
+          EOF
