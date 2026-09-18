@@ -38,10 +38,10 @@ El software en desarrollo es una aplicación de escritorio local (*Desktop Stand
 El agente de IA no opera de forma anárquica ni toma decisiones unilaterales. **Tiene la obligación explícita de consultar y subordinarse a los siguientes documentos de ingeniería antes de escribir código:**
 
 1. **[`docs/git_protocol.md`](file:///c:/Users/ASUS%20VIVO/Documents/Heladeria%20POO/docs/git_protocol.md) (Protocolo Estricto de Git):**
-   - **Regla Inquebrantable:** El agente tiene **estrictamente prohibido** ejecutar `git add`, `git commit`, `git checkout/switch`, `git merge` o `git push` de manera autónoma.
-   - Debe operar exclusivamente en ramas dedicadas (`feature/<nombre>`, `fix/<nombre>`). Jamás tocar `main` o `develop` directamente.
-   - Todo commit debe formularse en español técnico bajo **Conventional Commits** (`feat(...)`, `fix(...)`, `refactor(...)`, etc.) y presentarse en el chat solicitando confirmación textual explícita antes de ejecutar.
-   - Prohibición total de comandos destructivos (`push --force`, `reset --hard`, `clean -fd`).
+   - **Paso Cero Obligatorio de Detección:** Antes de crear o editar cualquier archivo en el disco, el agente debe verificar la rama activa (`git branch --show-current`). Si está en `main` (o `develop`), tiene prohibido alterar archivos en esa rama y debe crear inmediatamente una sub-rama de trabajo (`git switch -c <tipo>/<nombre>`) antes de cualquier modificación.
+   - **Operación en Ramas Dedicadas:** Debe operar exclusivamente en sub-ramas (`feature/<nombre>`, `fix/<nombre>`, `docs/<nombre>`, etc.). Jamás realizar commits ni push directos sobre `main` o `develop`.
+   - **Confirmación para Commits:** Todo commit debe formularse bajo **Conventional Commits** (`feat(...)`, `fix(...)`, `docs(...)`, etc.) y presentarse en el chat solicitando confirmación textual explícita previa.
+   - **Prohibición Total:** Prohibición absoluta de comandos destructivos (`push --force`, `reset --hard`, `clean -fd`, `branch -D`).
 
 2. **Gestión de Tareas y Prioridades en GitHub Projects (Sin Roadmap Local):**
    - **Fuente Única de Verdad para Tareas y Prioridades:** No existe un archivo `roadmap.md` local. El backlog, las prioridades (Ola 1 a Ola 5) y el estado de los requisitos funcionales se gestionan exclusivamente a través de **GitHub Projects** y los **Issues** del repositorio.
