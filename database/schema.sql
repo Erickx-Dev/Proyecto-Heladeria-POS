@@ -18,13 +18,13 @@ CREATE TABLE IF NOT EXISTS Rol (
 
 -- ------------------------------------------------------------------------------
 -- 2. TABLA: Usuario
--- Operadores del sistema con credenciales cifradas (SHA-256)
+-- Operadores del sistema con credenciales cifradas (bcrypt)
 -- ------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS Usuario (
     id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL CHECK (length(trim(nombre)) > 0),
     username TEXT NOT NULL UNIQUE CHECK (length(trim(username)) >= 3),
-    password_hash TEXT NOT NULL CHECK (length(password_hash) = 64),
+    password_hash TEXT NOT NULL CHECK (length(password_hash) = 60),
     id_rol INTEGER NOT NULL,
     estado INTEGER NOT NULL DEFAULT 1 CHECK (estado IN (0, 1)),
     FOREIGN KEY (id_rol) REFERENCES Rol (id_rol) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -190,6 +190,6 @@ INSERT OR IGNORE INTO Categoria (id_categoria, nombre_categoria, descripcion) VA
 
 -- 3. Usuario Administrador por Defecto
 -- Credenciales: username = admin, password = admin123
--- SHA-256('admin123') = 240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9
+-- bcrypt('admin123') = $2b$12$PmIxg7ONN2NO7XExZ9hBAODxQxq25YxDrbayYPDmfTgFxYFhMmSPa
 INSERT OR IGNORE INTO Usuario (id_usuario, nombre, username, password_hash, id_rol, estado) VALUES
-    (1, 'Administrador del Sistema', 'admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 1, 1);
+    (1, 'Administrador del Sistema', 'admin', '$2b$12$PmIxg7ONN2NO7XExZ9hBAODxQxq25YxDrbayYPDmfTgFxYFhMmSPa', 1, 1);

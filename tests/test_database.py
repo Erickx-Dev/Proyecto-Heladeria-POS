@@ -59,7 +59,7 @@ class TestDatabaseInfrastructure(unittest.TestCase):
             self.assertEqual(admin["username"], "admin")
             self.assertEqual(
                 admin["password_hash"],
-                "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
+                "$2b$12$PmIxg7ONN2NO7XExZ9hBAODxQxq25YxDrbayYPDmfTgFxYFhMmSPa",
             )
             self.assertEqual(admin["id_rol"], 1)
             self.assertEqual(admin["estado"], 1)
@@ -81,7 +81,7 @@ class TestDatabaseInfrastructure(unittest.TestCase):
                 cursor.execute(
                     """
                     INSERT INTO Usuario (nombre, username, password_hash, id_rol, estado)
-                    VALUES ('Usuario Prueba', 'test_user', 'a' * 64, 999, 1);
+                    VALUES ('Usuario Prueba', 'test_user', 'a' * 60, 999, 1);
                     """
                 )
         finally:

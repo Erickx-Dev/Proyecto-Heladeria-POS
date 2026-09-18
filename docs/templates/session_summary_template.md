@@ -98,7 +98,7 @@ Marque cada casilla únicamente tras verificar activamente el cumplimiento del e
 - [ ] **Transacciones ACID en Repositorios:** Operaciones compuestas (ej. inserción de venta + descuento de múltiples insumos + registro de auditoría) ejecutadas bajo un único bloque transaccional (`BEGIN TRANSACTION`, `COMMIT`, `ROLLBACK` en caso de excepción).
 - [ ] **Integridad de Tipos e Imports:** Tipado estático explícito (`typing`: `Optional`, `List`, `Dict`, `Tuple`, etc.) en métodos de dominio, repositorios y servicios. Verificación de cero importaciones circulares.
 - [ ] **Gestión de Recursos y Rendimiento:** Consumo de memoria contenido (< 200 MB de RAM). Destrucción limpia de frames y widgets descartados en CustomTkinter (`destroy()`), liberando listeners de eventos.
-- [ ] **Seguridad y Criptografía:** Ninguna contraseña almacenada en texto plano; uso exclusivo de hashing criptográfico SHA-256 con salt en `src/core/security.py`.
+- [ ] **Seguridad y Criptografía:** Ninguna contraseña almacenada en texto plano; uso exclusivo de hashing criptográfico seguro (bcrypt) centralizado en `src/core/security.py`.
 
 ---
 

@@ -76,7 +76,7 @@ Para asegurar la mantenibilidad y estabilidad del sistema, el agente debe verifi
 - Si ocurre una excepción en cualquier punto de la operación, el context manager disparará un `rollback` inmediato, previniendo datos huérfanos o inconsistencias contables ante cortes eléctricos.
 
 ### 3.4. Seguridad Criptográfica
-- **Cero contraseñas en texto plano:** Todas las credenciales deben procesarse exclusivamente a través de funciones hash seguras (SHA-256) centralizadas en `src/core/security.py`.
+- **Cero contraseñas en texto plano:** Todas las credenciales deben procesarse exclusivamente a través de funciones hash seguras (bcrypt) centralizadas en `src/core/security.py`.
 - Las consultas SQL deben utilizar parámetros enlazados mediante tuplas (`?`), **prohibiendo estrictamente la interpolación de cadenas (`f"SELECT... {variable}"`)** para blindar el sistema contra inyecciones SQL.
 
 ### 3.5. Gestión de Memoria y Ciclo de Vida de Widgets
