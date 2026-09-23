@@ -16,7 +16,7 @@ class AuthService:
         audit_service: Optional[AuditService] = None,
     ) -> None:
         self._db_path = db_path if db_path is not None else DEFAULT_DB_PATH
-        self._audit_service = audit_service or AuditService(self._db_path)
+        self._audit_service = audit_service or AuditService(db_path=self._db_path)
 
     @property
     def db_path(self) -> Union[str, Path]:

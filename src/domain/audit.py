@@ -1,6 +1,30 @@
 from __future__ import annotations
 
-from typing import Optional
+import json
+from typing import Any, Dict, Optional
+
+MODULO_VENTAS: str = "VENTAS"
+MODULO_CAJA: str = "CAJA"
+MODULO_GASTOS: str = "GASTOS"
+MODULO_INVENTARIO: str = "INVENTARIO"
+MODULO_CATALOGO: str = "CATALOGO"
+MODULO_USUARIOS: str = "USUARIOS"
+MODULO_AUTH: str = "AUTH"
+
+ACCION_VENTA_ANULADA: str = "VENTA_ANULADA"
+ACCION_CAJA_APERTURA: str = "CAJA_APERTURA"
+ACCION_CAJA_CIERRE: str = "CAJA_CIERRE"
+ACCION_GASTO_REGISTRADO: str = "GASTO_REGISTRADO"
+ACCION_MERMA_REGISTRADA: str = "MERMA_REGISTRADA"
+ACCION_PRECIO_MODIFICADO: str = "PRECIO_MODIFICADO"
+ACCION_LOGIN_EXITOSO: str = "LOGIN_EXITOSO"
+ACCION_LOGIN_FALLIDO: str = "LOGIN_FALLIDO"
+ACCION_LOGIN_BLOQUEADO: str = "LOGIN_BLOQUEADO"
+ACCION_USUARIO_CREADO: str = "USUARIO_CREADO"
+ACCION_USUARIO_ACTUALIZADO: str = "USUARIO_ACTUALIZADO"
+ACCION_USUARIO_ACTIVADO: str = "USUARIO_ACTIVADO"
+ACCION_USUARIO_DESACTIVADO: str = "USUARIO_DESACTIVADO"
+ACCION_PASSWORD_MODIFICADA: str = "PASSWORD_MODIFICADA"
 
 
 class AuditoriaLog:
@@ -67,3 +91,14 @@ class AuditoriaLog:
     @detalles.setter
     def detalles(self, valor: Optional[str]) -> None:
         self._detalles = valor
+
+    def obtener_detalles_dict(self) -> Optional[Dict[str, Any]]:
+        if not self._detalles:
+            return None
+        try:
+            parsed = json.loads(self._detalles)
+            if isinstance(parsed, dict):
+                return parsed
+            return {"valor": parsed}
+        except (ValueError, TypeError):
+            return {"texto": self._detalles}
