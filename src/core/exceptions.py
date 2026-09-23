@@ -41,3 +41,19 @@ class EntidadDuplicadaError(CatalogoError):
 class ReglaNegocioError(HeladeriaPOSException):
     """Lanzada ante violaciones de validaciones o restricciones lógicas de negocio."""
     pass
+
+
+class UsuarioDuplicadoError(ReglaNegocioError):
+    pass
+
+
+class UsuarioNoEncontradoError(ReglaNegocioError):
+    pass
+
+
+class CredencialInvalidaError(ReglaNegocioError):
+    pass
+
+
+class RolInvalidoError(ReglaNegocioError):
+    pass
