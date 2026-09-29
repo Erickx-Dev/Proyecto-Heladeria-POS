@@ -1,10 +1,3 @@
-"""
-Módulo de Persistencia y Base de Datos (SQLite3).
-
-Exporta las utilidades canónicas para conexión, transacciones seguras
-y control de esquemas relacionales.
-"""
-
 from .connection import (
     BASE_DIR,
     DEFAULT_DB_PATH,
