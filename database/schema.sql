@@ -105,6 +105,15 @@ CREATE TABLE IF NOT EXISTS AuditoriaLog (
     FOREIGN KEY (id_usuario) REFERENCES Usuario (id_usuario) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS Receta (
+    id_receta INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_producto INTEGER NOT NULL,
+    id_insumo INTEGER NOT NULL,
+    cantidad_necesaria REAL NOT NULL CHECK (cantidad_necesaria > 0.0),
+    FOREIGN KEY (id_producto) REFERENCES Producto (id_producto) ON DELETE CASCADE,
+    FOREIGN KEY (id_insumo) REFERENCES Insumo (id_insumo) ON DELETE RESTRICT
+);
+
 CREATE INDEX IF NOT EXISTS idx_usuario_username ON Usuario (username);
 CREATE INDEX IF NOT EXISTS idx_usuario_rol ON Usuario (id_rol);
 CREATE INDEX IF NOT EXISTS idx_producto_codigo ON Producto (codigo);
@@ -116,6 +125,8 @@ CREATE INDEX IF NOT EXISTS idx_detalle_venta_venta ON DetalleVenta (id_venta);
 CREATE INDEX IF NOT EXISTS idx_detalle_venta_producto ON DetalleVenta (id_producto);
 CREATE INDEX IF NOT EXISTS idx_gasto_caja ON Gasto (id_caja);
 CREATE INDEX IF NOT EXISTS idx_merma_insumo ON Merma (id_insumo);
+CREATE INDEX IF NOT EXISTS idx_receta_producto ON Receta (id_producto);
+CREATE INDEX IF NOT EXISTS idx_receta_insumo ON Receta (id_insumo);
 CREATE INDEX IF NOT EXISTS idx_auditoria_fecha_hora ON AuditoriaLog (fecha_hora);
 CREATE INDEX IF NOT EXISTS idx_auditoria_usuario ON AuditoriaLog (id_usuario);
 

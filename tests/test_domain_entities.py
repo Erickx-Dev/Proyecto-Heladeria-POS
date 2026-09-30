@@ -17,6 +17,7 @@ from src.domain import (
     Insumo,
     Merma,
     Producto,
+    Receta,
     Rol,
     TurnoCaja,
     Usuario,
@@ -307,6 +308,46 @@ class TestAuditoriaLog(unittest.TestCase):
         log = AuditoriaLog(accion="", modulo="")
         with self.assertRaises(ValidacionError):
             log.validar()
+
+
+class TestReceta(unittest.TestCase):
+
+    def test_receta_valida(self) -> None:
+        receta = Receta(
+            id_receta=1,
+            id_producto=1,
+            id_insumo=2,
+            cantidad_necesaria=0.5,
+        )
+        receta.validar()
+        self.assertEqual(receta.id_producto, 1)
+        self.assertEqual(receta.id_insumo, 2)
+        self.assertEqual(receta.cantidad_necesaria, 0.5)
+
+    def test_receta_producto_invalido(self) -> None:
+        receta = Receta(id_producto=0, id_insumo=1, cantidad_necesaria=1.0)
+        with self.assertRaises(ValidacionError):
+            receta.validar()
+
+    def test_receta_producto_negativo(self) -> None:
+        receta = Receta(id_producto=-1, id_insumo=1, cantidad_necesaria=1.0)
+        with self.assertRaises(ValidacionError):
+            receta.validar()
+
+    def test_receta_insumo_invalido(self) -> None:
+        receta = Receta(id_producto=1, id_insumo=0, cantidad_necesaria=1.0)
+        with self.assertRaises(ValidacionError):
+            receta.validar()
+
+    def test_receta_cantidad_cero(self) -> None:
+        receta = Receta(id_producto=1, id_insumo=1, cantidad_necesaria=0.0)
+        with self.assertRaises(ValidacionError):
+            receta.validar()
+
+    def test_receta_cantidad_negativa(self) -> None:
+        receta = Receta(id_producto=1, id_insumo=1, cantidad_necesaria=-2.5)
+        with self.assertRaises(ValidacionError):
+            receta.validar()
 
 
 if __name__ == "__main__":
