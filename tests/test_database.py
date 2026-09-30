@@ -172,6 +172,76 @@ class TestDatabaseInfrastructure(unittest.TestCase):
         tablas_backup = obtener_tablas_existentes(backup_file)
         self.assertEqual(set(tablas_backup), set(obtener_tablas_existentes(self.db_path)))
 
+    def test_tabla_receta_existe_y_funciona(self) -> None:
+        with get_db_transaction(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "INSERT INTO Producto (codigo, nombre, precio_venta, id_categoria) "
+                "VALUES ('REC-01', 'Cono Doble', 8000.0, 1);"
+            )
+            id_prod = cursor.lastrowid
+
+            cursor.execute(
+                "INSERT INTO Insumo (nombre, unidad_medida, stock_actual, stock_minimo) "
+                "VALUES ('Helado Vainilla', 'Litros', 50.0, 5.0);"
+            )
+            id_insumo = cursor.lastrowid
+
+            cursor.execute(
+                "INSERT INTO Receta (id_producto, id_insumo, cantidad_necesaria) "
+                "VALUES (?, ?, 0.15);",
+                (id_prod, id_insumo),
+            )
+            id_receta = cursor.lastrowid
+
+        with get_db_cursor(self.db_path) as cursor:
+            cursor.execute(
+                "SELECT cantidad_necesaria FROM Receta WHERE id_receta = ?;",
+                (id_receta,),
+            )
+            fila = cursor.fetchone()
+            self.assertIsNotNone(fila)
+            self.assertAlmostEqual(fila["cantidad_necesaria"], 0.15)
+
+    def test_receta_cascada_al_borrar_producto(self) -> None:
+        with get_db_transaction(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "INSERT INTO Producto (codigo, nombre, precio_venta, id_categoria) "
+                "VALUES ('CAS-01', 'Helado Cascada', 5000.0, 1);"
+            )
+            id_prod = cursor.lastrowid
+
+            cursor.execute(
+                "INSERT INTO Insumo (nombre, unidad_medida, stock_actual, stock_minimo) "
+                "VALUES ('Leche Entera', 'Litros', 30.0, 3.0);"
+            )
+            id_insumo = cursor.lastrowid
+
+            cursor.execute(
+                "INSERT INTO Receta (id_producto, id_insumo, cantidad_necesaria) "
+                "VALUES (?, ?, 0.25);",
+                (id_prod, id_insumo),
+            )
+
+        with get_db_transaction(self.db_path) as conn:
+            conn.execute("DELETE FROM Producto WHERE id_producto = ?;", (id_prod,))
+
+        with get_db_cursor(self.db_path) as cursor:
+            cursor.execute(
+                "SELECT count(*) FROM Receta WHERE id_producto = ?;",
+                (id_prod,),
+            )
+            self.assertEqual(cursor.fetchone()[0], 0)
+
+    def test_receta_restriccion_cantidad_positiva(self) -> None:
+        with self.assertRaises(sqlite3.IntegrityError):
+            with get_db_transaction(self.db_path) as conn:
+                conn.execute(
+                    "INSERT INTO Receta (id_producto, id_insumo, cantidad_necesaria) "
+                    "VALUES (1, 1, -1.0);"
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

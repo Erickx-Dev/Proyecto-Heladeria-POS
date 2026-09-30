@@ -19,6 +19,7 @@ TABLAS_REQUERIDAS: tuple[str, ...] = (
     "Gasto",
     "Merma",
     "AuditoriaLog",
+    "Receta",
 )
 
 SCHEMA_FILE: Path = Path(__file__).resolve().parent / "schema.sql"

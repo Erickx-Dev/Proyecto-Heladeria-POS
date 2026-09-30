@@ -62,7 +62,7 @@ flowchart TD
   - Modelar mediante `@dataclass` limpias e inmutables con métodos `validar()`: `Rol`, `Usuario`, `Categoria`, `Producto`, `Insumo`, `TurnoCaja`, `Arqueo`, `Venta`, `DetalleVenta`, `Gasto`, `Merma`, `AuditoriaLog`.
 - [x] **1.5. Suite de Pruebas Unitarias de Fundamentos (34 Tests)**
   - Archivos: `tests/test_database.py`, `tests/test_domain_entities.py`.
-- [ ] **1.6. Incorporación de la Tabla y Entidad `Receta` (Composición Producto-Insumo)**
+- [x] **1.6. Incorporación de la Tabla y Entidad `Receta` (Composición Producto-Insumo)**
   - **Motivación técnica:** Permitir que las ventas en el POS descuenten automáticamente las porciones e insumos exactos correspondientes a cada producto (RF04/RF08).
   - Tarea 1.6.1: Crear migración DDL en `database/schema.sql` para la tabla `Receta`:
     ```sql
@@ -85,11 +85,11 @@ flowchart TD
 *Objetivo: Implementar la seguridad con bcrypt, el repositorio de usuarios y la autenticación segmentada por roles.*  
 *Requerimientos IEEE 830 cubiertos: **RF01** (Login), **RF13** (Gestión de Usuarios), **RNF02** (Criptografía).*
 
-- [ ] **2.1. Módulo Centralizado de Seguridad (`src/core/security.py`)**
+- [x] **2.1. Módulo Centralizado de Seguridad (`src/core/security.py`)**
   - Implementar `hash_password(plain_password: str) -> str` usando `bcrypt.hashpw` con salt dinámico (`gensalt()`).
   - Implementar `verify_password(plain_password: str, hashed_password: str) -> bool` usando `bcrypt.checkpw`.
   - Validar que los hashes generados cumplan la longitud fija de 60 caracteres.
-- [ ] **2.2. Repositorio de Usuarios (`src/repositories/user_repository.py`)**
+- [x] **2.2. Repositorio de Usuarios (`src/repositories/user_repository.py`)**
   - `obtener_por_id(id_usuario: int) -> Optional[Usuario]`
   - `obtener_por_username(username: str) -> Optional[Usuario]`
   - `crear_usuario(usuario: Usuario) -> int`
@@ -97,7 +97,7 @@ flowchart TD
   - `cambiar_password(id_usuario: int, nuevo_hash: str) -> bool`
   - `cambiar_estado(id_usuario: int, nuevo_estado: int) -> bool`
   - `listar_usuarios(solo_activos: bool = False) -> List[Usuario]`
-- [ ] **2.3. Servicio de Autenticación (`src/services/auth_service.py`)**
+- [x] **2.3. Servicio de Autenticación (`src/services/auth_service.py`)**
   - `autenticar(username: str, password_plana: str) -> Usuario`
   - Validaciones: usuario existente, estado activo (`estado == 1`), verificación criptográfica contra `password_hash`.
   - Manejo de sesión actual en memoria (`usuario_autenticado`).
