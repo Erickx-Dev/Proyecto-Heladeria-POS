@@ -1,9 +1,34 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
+from enum import Enum
+from typing import Dict, FrozenSet, Optional
 
 from src.core.exceptions import ValidacionError
+
+
+class Permiso(str, Enum):
+    VENTAS = "VENTAS"
+    CAJA = "CAJA"
+    GASTOS = "GASTOS"
+    MERMAS = "MERMAS"
+    CATALOGO = "CATALOGO"
+    INVENTARIO = "INVENTARIO"
+    GESTIONAR_USUARIOS = "GESTIONAR_USUARIOS"
+    REPORTES = "REPORTES"
+    AUDITORIA = "AUDITORIA"
+    BACKUP = "BACKUP"
+
+
+PERMISOS_POR_ROL: Dict[int, FrozenSet[Permiso]] = {
+    1: frozenset(Permiso),
+    2: frozenset({
+        Permiso.VENTAS,
+        Permiso.CAJA,
+        Permiso.GASTOS,
+        Permiso.MERMAS,
+    }),
+}
 
 
 @dataclass
@@ -32,6 +57,15 @@ class Usuario:
 
     def es_administrador(self) -> bool:
         return self.id_rol == 1
+
+    def tiene_permiso(self, permiso: Permiso) -> bool:
+        if not self.es_activo():
+            return False
+        permisos_rol: FrozenSet[Permiso] = PERMISOS_POR_ROL.get(self.id_rol, frozenset())
+        return permiso in permisos_rol
+
+    def has_permission(self, permiso: Permiso) -> bool:
+        return self.tiene_permiso(permiso)
 
     def validar(self) -> None:
         if not self.nombre or not self.nombre.strip():

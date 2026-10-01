@@ -9,11 +9,13 @@ from src.domain.product import Producto
 from src.domain.recipe import Receta
 from src.domain.sale import DetalleVenta, Venta
 from src.domain.supply import Insumo
-from src.domain.user import Rol, Usuario
+from src.domain.user import PERMISOS_POR_ROL, Permiso, Rol, Usuario
 
 __all__ = [
     "Usuario",
     "Rol",
+    "Permiso",
+    "PERMISOS_POR_ROL",
     "Categoria",
     "Producto",
     "Insumo",
@@ -26,3 +28,4 @@ __all__ = [
     "Merma",
     "AuditoriaLog",
 ]
+

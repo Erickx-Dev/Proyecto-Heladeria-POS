@@ -20,6 +20,12 @@ class AutenticacionError(HeladeriaPOSException):
         super().__init__(mensaje)
 
 
+class AutorizacionError(HeladeriaPOSException):
+
+    def __init__(self, mensaje: str = "No cuenta con los permisos necesarios para realizar esta acción.") -> None:
+        super().__init__(mensaje)
+
+
 class CajaYaAbiertaError(HeladeriaPOSException):
 
     def __init__(
