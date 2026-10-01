@@ -102,13 +102,14 @@ flowchart TD
   - Validaciones: usuario existente, estado activo (`estado == 1`), verificación criptográfica contra `password_hash`.
   - Manejo de sesión actual en memoria (`usuario_autenticado`).
   - Registro de auditoría ante inicios de sesión exitosos y fallidos.
-- [ ] **2.4. Servicio de Gestión de Usuarios (`src/services/user_service.py`)**
-  - Reglas de negocio para roles (Administrador vs. Empleado).
+- [x] **2.4. Servicio de Gestión de Usuarios (`src/services/user_service.py`)**
+  - Reglas de negocio para roles (Administrador vs. Empleado) y matriz de capacidades (`has_permission`).
   - Validación de unicidad de username y complejidad mínima de contraseña.
-- [ ] **2.5. Pruebas Automatizadas de la Ola 2**
+- [x] **2.5. Pruebas Automatizadas de la Ola 2**
   - `tests/test_security.py`: Verificación de generación de salt, hashes válidos y rechazo de contraseñas incorrectas.
   - `tests/test_user_repository.py`: CRUD parametrizado contra base de datos de pruebas en memoria.
   - `tests/test_auth_service.py`: Casos de login correcto, credenciales inválidas y usuario inactivo.
+  - `tests/test_user_service.py`: Casos de creación, validación de permisos, actualización, contraseñas, estados, auditoría y protección del último admin (37 tests).
 
 ---
 
