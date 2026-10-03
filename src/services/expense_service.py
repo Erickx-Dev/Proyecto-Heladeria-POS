@@ -34,7 +34,6 @@ class ExpenseService:
         id_usuario: Optional[int],
         detalles: str,
     ) -> None:
-        """Registra un evento en AuditoriaLog con módulo 'GASTOS'."""
         fecha_hora: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with get_db_transaction(self._db_path) as conn:
             conn.execute(
@@ -49,43 +48,24 @@ class ExpenseService:
         monto: float,
         descripcion: str,
     ) -> Gasto:
-        """Registra un gasto de caja menor.
-
-        Validaciones:
-            1. Debe existir un turno de caja abierto.
-            2. El monto debe ser estrictamente positivo.
-            3. La descripción debe ser una justificación no vacía.
-            4. El monto no debe exceder el saldo disponible en gaveta.
-
-        Raises:
-            CajaNoAbiertaError: Si no hay turno abierto.
-            MontoInvalidoError: Si el monto no es positivo.
-            ValidacionError: Si la descripción está vacía.
-            GastoExcedeSaldoDisponibleError: Si no hay liquidez suficiente.
-        """
-        # 1. Validar turno abierto
         turno = self._cash_service.obtener_turno_activo()
 
-        # 2. Validar monto positivo
         if monto <= 0.0:
             raise MontoInvalidoError("El monto del gasto debe ser mayor a cero.")
 
-        # 3. Validar descripción justificada
         if not descripcion or not descripcion.strip():
             raise ValidacionError("La descripción del gasto es obligatoria.")
 
-        # 4. Verificar liquidez suficiente en gaveta
-        saldo_disponible: float = self._cash_service.obtener_saldo_disponible(turno.id_caja)  # type: ignore[arg-type]
+        saldo_disponible: float = self._cash_service.obtener_saldo_disponible(turno.id_caja)
         if monto > saldo_disponible:
             raise GastoExcedeSaldoDisponibleError(
                 monto_solicitado=monto,
                 saldo_disponible=saldo_disponible,
             )
 
-        # 5. Crear y persistir gasto
         fecha_hora: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         gasto: Gasto = Gasto(
-            id_caja=turno.id_caja,  # type: ignore[arg-type]
+            id_caja=turno.id_caja,
             fecha_hora=fecha_hora,
             monto=monto,
             descripcion=descripcion.strip(),
@@ -94,7 +74,6 @@ class ExpenseService:
         id_gasto: int = self._expense_repo.registrar_gasto(gasto)
         gasto.id_gasto = id_gasto
 
-        # 6. Auditoría
         self._registrar_auditoria(
             "GASTO_REGISTRADO",
             id_usuario,
@@ -105,19 +84,9 @@ class ExpenseService:
         return gasto
 
     def listar_gastos_turno_activo(self) -> List[Gasto]:
-        """Lista todos los gastos del turno activo actual.
-
-        Raises:
-            CajaNoAbiertaError: Si no hay turno abierto.
-        """
         turno = self._cash_service.obtener_turno_activo()
-        return self._expense_repo.listar_gastos_por_caja(turno.id_caja)  # type: ignore[arg-type]
+        return self._expense_repo.listar_gastos_por_caja(turno.id_caja)
 
     def obtener_total_gastos_turno_activo(self) -> float:
-        """Retorna el total de gastos del turno activo.
-
-        Raises:
-            CajaNoAbiertaError: Si no hay turno abierto.
-        """
         turno = self._cash_service.obtener_turno_activo()
-        return self._expense_repo.calcular_total_gastos(turno.id_caja)  # type: ignore[arg-type]
+        return self._expense_repo.calcular_total_gastos(turno.id_caja)

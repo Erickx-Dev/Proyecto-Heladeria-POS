@@ -33,7 +33,6 @@ class CashService:
         id_usuario: Optional[int],
         detalles: str,
     ) -> None:
-        """Registra un evento en AuditoriaLog con módulo 'CAJA'."""
         fecha_hora: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with get_db_transaction(self._db_path) as conn:
             conn.execute(
@@ -43,12 +42,6 @@ class CashService:
             )
 
     def abrir_turno(self, id_usuario: int, monto_inicial: float) -> TurnoCaja:
-        """Abre un nuevo turno de caja.
-
-        Raises:
-            CajaYaAbiertaError: Si ya hay un turno abierto.
-            MontoInvalidoError: Si el monto inicial es negativo.
-        """
         if monto_inicial < 0.0:
             raise MontoInvalidoError("El monto inicial no puede ser negativo.")
 
@@ -66,38 +59,20 @@ class CashService:
         )
 
         turno: Optional[TurnoCaja] = self._cash_repo.obtener_caja_por_id(id_caja)
-        return turno  # type: ignore[return-value]
+        return turno
 
     def obtener_turno_activo(self) -> TurnoCaja:
-        """Retorna el turno activo o lanza CajaNoAbiertaError.
-
-        Método esencial para validar que el POS puede operar.
-
-        Raises:
-            CajaNoAbiertaError: Si no existe una caja abierta.
-        """
         caja: Optional[TurnoCaja] = self._cash_repo.obtener_caja_activa()
         if caja is None:
             raise CajaNoAbiertaError()
         return caja
 
     def cerrar_turno(self, id_usuario: int, monto_fisico_real: float) -> Arqueo:
-        """Cierra el turno activo con conciliación de arqueo.
-
-        Fórmula de arqueo:
-            Saldo Esperado = Monto Inicial + Σ Ventas Efectivo - Σ Gastos
-            Diferencia = Monto Físico Declarado - Saldo Esperado
-
-        Raises:
-            CajaNoAbiertaError: Si no hay turno abierto.
-            MontoInvalidoError: Si monto_fisico_real es negativo.
-        """
         if monto_fisico_real < 0.0:
             raise MontoInvalidoError("El monto físico declarado no puede ser negativo.")
 
         caja: TurnoCaja = self.obtener_turno_activo()
 
-        # Calcular componentes del arqueo
         total_ventas_efectivo: float = self._cash_repo.obtener_total_ventas_efectivo(caja.id_caja)
         total_gastos: float = self._expense_repo.calcular_total_gastos(caja.id_caja)
 
@@ -110,7 +85,7 @@ class CashService:
 
         fecha_hora: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self._cash_repo.cerrar_caja(
-            caja.id_caja, monto_fisico_real, arqueo.diferencia, fecha_hora,  # type: ignore[arg-type]
+            caja.id_caja, monto_fisico_real, arqueo.diferencia, fecha_hora,
         )
 
         self._registrar_auditoria(
@@ -125,10 +100,6 @@ class CashService:
         return arqueo
 
     def obtener_saldo_disponible(self, id_caja: int) -> float:
-        """Calcula el saldo disponible actual en la gaveta.
-
-        Saldo = Monto Inicial + Ventas Efectivo - Gastos
-        """
         caja: Optional[TurnoCaja] = self._cash_repo.obtener_caja_por_id(id_caja)
         if caja is None:
             raise CajaNoAbiertaError("No existe la caja especificada.")

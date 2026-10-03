@@ -117,16 +117,16 @@ flowchart TD
 *Objetivo: Administrar el ciclo de vida del turno de caja (apertura, egresos menores y arqueo conciliado).*  
 *Requerimientos IEEE 830 cubiertos: **RF02** (Apertura de Turno), **RF10** (Gastos de Caja Menor), **RF11** (Arqueo y Cierre).*
 
-- [ ] **3.1. Repositorio de Caja (`src/repositories/cash_repository.py`)**
+- [x] **3.1. Repositorio de Caja (`src/repositories/cash_repository.py`)**
   - `abrir_caja(id_usuario: int, monto_inicial: float, fecha_hora: str) -> int`
   - `obtener_caja_activa() -> Optional[TurnoCaja]`
   - `cerrar_caja(id_caja: int, monto_final_real: float, diferencia: float, fecha_hora: str) -> bool`
   - `obtener_caja_por_id(id_caja: int) -> Optional[TurnoCaja]`
-- [ ] **3.2. Repositorio de Gastos (`src/repositories/expense_repository.py`)**
+- [x] **3.2. Repositorio de Gastos (`src/repositories/expense_repository.py`)**
   - `registrar_gasto(gasto: Gasto) -> int`
   - `listar_gastos_por_caja(id_caja: int) -> List[Gasto]`
   - `calcular_total_gastos(id_caja: int) -> float`
-- [ ] **3.3. Servicio de Turnos y Caja (`src/services/cash_service.py`)**
+- [x] **3.3. Servicio de Turnos y Caja (`src/services/cash_service.py`)**
   - Apertura obligatoria: Bloqueo de POS si no existe turno abierto (`CajaCerradaError`).
   - Prevención de doble apertura concurrente (`CajaYaAbiertaError`).
   - Arqueo al cierre:
@@ -135,10 +135,10 @@ flowchart TD
     - Diferencia $> 0 \implies \text{Sobrante}$
     - Diferencia $< 0 \implies \text{Faltante}$
     - Diferencia $= 0 \implies \text{Cuadre Exacto}$
-- [ ] **3.4. Servicio de Gastos Menores (`src/services/expense_service.py`)**
+- [x] **3.4. Servicio de Gastos Menores (`src/services/expense_service.py`)**
   - Validación de monto positivo y descripción justificada.
   - Verificación de liquidez suficiente en la gaveta antes de autorizar el egreso.
-- [ ] **3.5. Pruebas Automatizadas de la Ola 3**
+- [x] **3.5. Pruebas Automatizadas de la Ola 3**
   - `tests/test_cash_service.py`: Simulación de turno completo con monto inicial, gastos y conciliación matemática de arqueo.
 
 ---
