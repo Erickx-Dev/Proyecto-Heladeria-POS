@@ -21,7 +21,6 @@ from src.services.expense_service import ExpenseService
 
 
 class TestCashRepository(unittest.TestCase):
-    """Pruebas unitarias del repositorio de caja (CashRepository)."""
 
     def setUp(self) -> None:
         self.temp_dir = tempfile.TemporaryDirectory()
@@ -82,7 +81,6 @@ class TestCashRepository(unittest.TestCase):
 
 
 class TestExpenseRepository(unittest.TestCase):
-    """Pruebas unitarias del repositorio de gastos (ExpenseRepository)."""
 
     def setUp(self) -> None:
         self.temp_dir = tempfile.TemporaryDirectory()
@@ -90,7 +88,6 @@ class TestExpenseRepository(unittest.TestCase):
         inicializar_base_de_datos(self.db_path)
         self.cash_repo = CashRepository(db_path=self.db_path)
         self.expense_repo = ExpenseRepository(db_path=self.db_path)
-        # Abrir una caja para registrar gastos
         self.id_caja = self.cash_repo.abrir_caja(1, 100000.0, "2026-10-02 08:00:00")
 
     def tearDown(self) -> None:
@@ -162,7 +159,6 @@ class TestExpenseRepository(unittest.TestCase):
 
 
 class TestCashService(unittest.TestCase):
-    """Pruebas del servicio de turnos y caja (CashService)."""
 
     def setUp(self) -> None:
         self.temp_dir = tempfile.TemporaryDirectory()
@@ -212,8 +208,6 @@ class TestCashService(unittest.TestCase):
             self.cash_service.obtener_turno_activo()
 
     def test_cerrar_turno_cuadre_exacto(self) -> None:
-        """Sin ventas ni gastos: el saldo esperado = monto_inicial.
-        Si se declara el mismo monto, diferencia = 0 (CUADRADO)."""
         self.cash_service.abrir_turno(self.id_usuario, 100000.0)
         arqueo = self.cash_service.cerrar_turno(self.id_usuario, 100000.0)
         self.assertEqual(arqueo.saldo_esperado, 100000.0)
@@ -221,32 +215,27 @@ class TestCashService(unittest.TestCase):
         self.assertEqual(arqueo.tipo_diferencia, "CUADRADO")
 
     def test_cerrar_turno_sobrante(self) -> None:
-        """Monto físico > saldo esperado → SOBRANTE."""
         self.cash_service.abrir_turno(self.id_usuario, 100000.0)
         arqueo = self.cash_service.cerrar_turno(self.id_usuario, 105000.0)
         self.assertEqual(arqueo.diferencia, 5000.0)
         self.assertEqual(arqueo.tipo_diferencia, "SOBRANTE")
 
     def test_cerrar_turno_faltante(self) -> None:
-        """Monto físico < saldo esperado → FALTANTE."""
         self.cash_service.abrir_turno(self.id_usuario, 100000.0)
         arqueo = self.cash_service.cerrar_turno(self.id_usuario, 98000.0)
         self.assertEqual(arqueo.diferencia, -2000.0)
         self.assertEqual(arqueo.tipo_diferencia, "FALTANTE")
 
     def test_cerrar_turno_con_gastos(self) -> None:
-        """El saldo esperado descuenta los gastos registrados."""
         self.cash_service.abrir_turno(self.id_usuario, 100000.0)
         turno = self.cash_service.obtener_turno_activo()
 
-        # Registrar gastos directamente en el repositorio
         gasto = Gasto(
             id_caja=turno.id_caja, fecha_hora="2026-10-02 10:00:00",
             monto=15000.0, descripcion="Compra de insumos urgentes", id_usuario=1,
         )
         self.expense_repo.registrar_gasto(gasto)
 
-        # Saldo esperado = 100000 + 0 (ventas) - 15000 (gastos) = 85000
         arqueo = self.cash_service.cerrar_turno(self.id_usuario, 85000.0)
         self.assertEqual(arqueo.saldo_esperado, 85000.0)
         self.assertEqual(arqueo.total_gastos, 15000.0)
@@ -278,7 +267,6 @@ class TestCashService(unittest.TestCase):
         self.assertEqual(saldo, 80000.0)
 
     def test_abrir_nuevo_turno_despues_de_cerrar(self) -> None:
-        """Después de cerrar un turno, se puede abrir uno nuevo."""
         self.cash_service.abrir_turno(self.id_usuario, 100000.0)
         self.cash_service.cerrar_turno(self.id_usuario, 100000.0)
 
@@ -288,7 +276,6 @@ class TestCashService(unittest.TestCase):
 
 
 class TestExpenseService(unittest.TestCase):
-    """Pruebas del servicio de gastos menores (ExpenseService)."""
 
     def setUp(self) -> None:
         self.temp_dir = tempfile.TemporaryDirectory()
@@ -365,19 +352,16 @@ class TestExpenseService(unittest.TestCase):
         self.assertEqual(ctx.exception.saldo_disponible, 10000.0)
 
     def test_gastos_multiples_reducen_saldo(self) -> None:
-        """Varios gastos reducen progresivamente el saldo disponible."""
         self.cash_service.abrir_turno(self.id_usuario, 50000.0)
 
         self.expense_service.registrar_gasto(self.id_usuario, 20000.0, "Primer gasto")
         self.expense_service.registrar_gasto(self.id_usuario, 15000.0, "Segundo gasto")
 
-        # Saldo = 50000 - 20000 - 15000 = 15000
         saldo = self.cash_service.obtener_saldo_disponible(
             self.cash_service.obtener_turno_activo().id_caja,
         )
         self.assertEqual(saldo, 15000.0)
 
-        # Un tercer gasto que excede el remanente
         with self.assertRaises(GastoExcedeSaldoDisponibleError):
             self.expense_service.registrar_gasto(
                 self.id_usuario, 20000.0, "Excede remanente",
@@ -401,10 +385,6 @@ class TestExpenseService(unittest.TestCase):
 
 
 class TestFlujoTurnoCompleto(unittest.TestCase):
-    """Prueba de integración: simula un turno completo de caja.
-
-    Flujo: Apertura → Registro de gastos → Cierre con verificación matemática de arqueo.
-    """
 
     def setUp(self) -> None:
         self.temp_dir = tempfile.TemporaryDirectory()
@@ -428,16 +408,11 @@ class TestFlujoTurnoCompleto(unittest.TestCase):
         self.temp_dir.cleanup()
 
     def test_flujo_turno_completo_con_gastos_y_arqueo(self) -> None:
-        """Simula un turno de caja completo con apertura, múltiples gastos
-        y cierre con conciliación de arqueo matemático."""
-
-        # === FASE 1: Apertura de turno ===
         monto_inicial = 200000.0
         turno = self.cash_service.abrir_turno(self.id_usuario, monto_inicial)
         self.assertEqual(turno.estado, ESTADO_ABIERTA)
         self.assertEqual(turno.monto_inicial, monto_inicial)
 
-        # === FASE 2: Registro de gastos operativos ===
         gastos_registrados = [
             ("Compra de conos y barquillos", 25000.0),
             ("Pago de servicio de agua", 15000.0),
@@ -452,21 +427,14 @@ class TestFlujoTurnoCompleto(unittest.TestCase):
             self.assertIsNotNone(gasto.id_gasto)
             total_gastos_esperado += monto
 
-        # Verificar total de gastos
         total_real = self.expense_service.obtener_total_gastos_turno_activo()
         self.assertEqual(total_real, total_gastos_esperado)
         self.assertEqual(total_real, 60000.0)
 
-        # Verificar saldo disponible
         saldo = self.cash_service.obtener_saldo_disponible(turno.id_caja)
-        saldo_esperado = monto_inicial - total_gastos_esperado  # 200000 - 60000 = 140000
+        saldo_esperado = monto_inicial - total_gastos_esperado
         self.assertEqual(saldo, saldo_esperado)
 
-        # === FASE 3: Cierre y Arqueo Conciliado ===
-        # Sin ventas en efectivo (no hay ventas registradas en este test)
-        # Saldo esperado del arqueo = 200000 + 0 - 60000 = 140000
-
-        # Caso: cajero declara exactamente lo esperado → CUADRADO
         arqueo = self.cash_service.cerrar_turno(self.id_usuario, 140000.0)
 
         self.assertEqual(arqueo.monto_inicial, 200000.0)
@@ -477,22 +445,18 @@ class TestFlujoTurnoCompleto(unittest.TestCase):
         self.assertEqual(arqueo.diferencia, 0.0)
         self.assertEqual(arqueo.tipo_diferencia, "CUADRADO")
 
-        # Verificar que la caja quedó cerrada
         with self.assertRaises(CajaNoAbiertaError):
             self.cash_service.obtener_turno_activo()
 
-        # Verificar datos persistidos
         caja_cerrada = self.cash_repo.obtener_caja_por_id(turno.id_caja)
         self.assertEqual(caja_cerrada.estado, ESTADO_CERRADA)
         self.assertEqual(caja_cerrada.monto_final_real, 140000.0)
         self.assertEqual(caja_cerrada.diferencia, 0.0)
         self.assertIsNotNone(caja_cerrada.fecha_cierre)
 
-        # Verificar que los gastos están vinculados al turno correcto
         gastos_persistidos = self.expense_repo.listar_gastos_por_caja(turno.id_caja)
         self.assertEqual(len(gastos_persistidos), 4)
 
-        # Verificar resumen completo del arqueo
         resumen = arqueo.obtener_resumen()
         self.assertEqual(resumen["monto_inicial"], 200000.0)
         self.assertEqual(resumen["total_ventas_efectivo"], 0.0)

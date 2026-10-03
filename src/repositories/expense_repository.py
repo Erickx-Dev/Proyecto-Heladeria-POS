@@ -14,7 +14,6 @@ class ExpenseRepository:
         self._db_path: Optional[Union[str, Path]] = db_path
 
     def _fila_a_gasto(self, fila: sqlite3.Row) -> Gasto:
-        """Convierte un sqlite3.Row a la entidad de dominio Gasto."""
         return Gasto(
             id_gasto=fila["id_gasto"],
             id_caja=fila["id_caja"],
@@ -25,7 +24,6 @@ class ExpenseRepository:
         )
 
     def registrar_gasto(self, gasto: Gasto) -> int:
-        """Inserta un nuevo gasto y retorna el id_gasto generado."""
         gasto.validar()
         with get_db_transaction(self._db_path) as conn:
             cursor = conn.execute(
@@ -34,10 +32,9 @@ class ExpenseRepository:
                 (gasto.id_caja, gasto.fecha_hora, gasto.monto,
                  gasto.descripcion, gasto.id_usuario),
             )
-            return cursor.lastrowid  # type: ignore[return-value]
+            return cursor.lastrowid
 
     def listar_gastos_por_caja(self, id_caja: int) -> List[Gasto]:
-        """Lista todos los gastos registrados para un turno de caja específico."""
         with get_db_cursor(self._db_path) as cursor:
             cursor.execute(
                 "SELECT id_gasto, id_caja, fecha_hora, monto, descripcion, id_usuario "
@@ -47,7 +44,6 @@ class ExpenseRepository:
             return [self._fila_a_gasto(fila) for fila in cursor.fetchall()]
 
     def calcular_total_gastos(self, id_caja: int) -> float:
-        """Calcula la suma total de gastos para un turno de caja."""
         with get_db_cursor(self._db_path) as cursor:
             cursor.execute(
                 "SELECT COALESCE(SUM(monto), 0.0) FROM Gasto WHERE id_caja = ?;",
