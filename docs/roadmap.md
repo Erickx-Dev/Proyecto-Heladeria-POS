@@ -147,28 +147,28 @@ flowchart TD
 *Objetivo: Controlar el portafolio de productos, la bodega de materias primas, su composición y las pérdidas justificadas.*  
 *Requerimientos IEEE 830 cubiertos: **RF06** (Catálogo), **RF07** (Insumos), **RF08** (Stock Mínimo), **RF09** (Mermas).*
 
-- [ ] **4.1. Repositorios de Catálogo (`category_repository.py`, `product_repository.py`)**
+- [x] **4.1. Repositorios de Catálogo (`category_repository.py`, `product_repository.py`)**
   - CRUD completo de `Categoria` y `Producto`.
   - Filtro por categoría comercial y estado (activo/suspendido).
   - Consulta rápida por código de producto (indexada en SQLite).
-- [ ] **4.2. Repositorio de Insumos y Bodega (`supply_repository.py`)**
+- [x] **4.2. Repositorio de Insumos y Bodega (`supply_repository.py`)**
   - CRUD de insumos (nombre, unidad de medida, stock actual, stock mínimo).
   - `descontar_stock(id_insumo: int, cantidad: float) -> bool`
   - `aumentar_stock(id_insumo: int, cantidad: float) -> bool`
   - `obtener_insumos_en_alerta() -> List[Insumo]` (donde `stock_actual <= stock_minimo`).
-- [ ] **4.3. Repositorio de Recetas (`recipe_repository.py`)**
+- [x] **4.3. Repositorio de Recetas (`recipe_repository.py`)**
   - `asociar_insumo_a_producto(id_producto: int, id_insumo: int, cantidad: float) -> int`
   - `obtener_receta_por_producto(id_producto: int) -> List[Receta]`
   - `eliminar_insumo_de_receta(id_receta: int) -> bool`
-- [ ] **4.4. Repositorio de Mermas (`loss_repository.py`)**
+- [x] **4.4. Repositorio de Mermas (`loss_repository.py`)**
   - `registrar_merma(merma: Merma) -> int`
   - Descuento inmediato de stock del insumo involucrado sin impacto dinerario en caja.
-- [ ] **4.5. Capa de Servicios de Inventario y Catálogo**
+- [x] **4.5. Capa de Servicios de Inventario y Catálogo**
   - `catalog_service.py`: Validaciones de precios $\ge 0.0$ y nombres no vacíos.
   - `inventory_service.py`: Notificación de alertas de stock mínimo y reposición de bodega.
   - `loss_service.py`: Exigencia de motivo justificado para cada descarte.
-- [ ] **4.6. Pruebas Automatizadas de la Ola 4**
-  - `tests/test_catalog_service.py`, `tests/test_inventory_service.py`.
+- [x] **4.6. Pruebas Automatizadas de la Ola 4**
+  - `tests/test_catalog_service.py`, `tests/test_inventory_service.py`, `tests/test_loss_service.py`.
 
 ---
 
