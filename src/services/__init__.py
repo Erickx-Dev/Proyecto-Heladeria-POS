@@ -6,6 +6,7 @@ from src.services.catalog_service import CatalogService
 from src.services.expense_service import ExpenseService
 from src.services.inventory_service import InventoryService
 from src.services.loss_service import LossService
+from src.services.pos_service import ItemVenta, POSService
 from src.services.user_service import UserService
 
 __all__ = [
@@ -14,6 +15,8 @@ __all__ = [
     "CatalogService",
     "ExpenseService",
     "InventoryService",
+    "ItemVenta",
     "LossService",
+    "POSService",
     "UserService",
 ]
