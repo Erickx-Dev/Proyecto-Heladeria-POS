@@ -176,24 +176,24 @@ flowchart TD
 *Objetivo: Procesar la venta en mostrador de forma ágil, atómica (ACID) y con registro inalterable de auditoría.*  
 *Requerimientos IEEE 830 cubiertos: **RF03** (POS), **RF04** (Cobro Multimodal), **RF05** (Detalle Venta), **RF14** (Auditoría).*
 
-- [ ] **5.1. Repositorio de Ventas Transaccional (`src/repositories/sale_repository.py`)**
+- [x] **5.1. Repositorio de Ventas Transaccional (`src/repositories/sale_repository.py`)**
   - Ejecutar bajo un único bloque atómico con `get_db_transaction()`:
     1. Inserción de cabecera en `Venta`.
     2. Inserción de $N$ partidas en `DetalleVenta`.
     3. Para cada ítem vendido, consultar su `Receta` y ejecutar `descontar_stock` en `Insumo`.
     4. Inserción del evento en `AuditoriaLog`.
   - Disparo de `rollback` automático ante fallo en cualquiera de los pasos.
-- [ ] **5.2. Repositorio de Auditoría (`src/repositories/audit_repository.py`)**
+- [x] **5.2. Repositorio de Auditoría (`src/repositories/audit_repository.py`)**
   - Inserción inalterable en `AuditoriaLog` (timestamp, id_usuario, módulo, acción, detalles).
   - Consulta de logs filtrables por rango de fechas o usuario.
-- [ ] **5.3. Servicio de Punto de Venta (`src/services/pos_service.py`)**
+- [x] **5.3. Servicio de Punto de Venta (`src/services/pos_service.py`)**
   - Validación de turno de caja abierto antes de iniciar comanda.
   - Cálculo automático de subtotales, totales y recargos por toppings.
   - Modalidades de cobro multimodal:
     - *Efectivo:* Exigir $\text{dinero\_recibido} \ge \text{total}$, calcular $\text{cambio} = \text{recibido} - \text{total}$.
     - *Transferencias (Nequi, Daviplata, QR):* $\text{dinero\_recibido} = \text{total}$, $\text{cambio} = 0.0$.
   - Comprobación preventiva de stock de insumos antes de consolidar la transacción (`StockInsuficienteError`).
-- [ ] **5.4. Pruebas Automatizadas de la Ola 5**
+- [x] **5.4. Pruebas Automatizadas de la Ola 5**
   - `tests/test_pos_service.py`: Simulación de ventas con múltiples líneas, cálculo de devuelta y verificación de atomicidad ante fallos inducidos.
 
 ---
