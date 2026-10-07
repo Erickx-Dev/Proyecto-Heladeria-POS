@@ -40,11 +40,6 @@ class SaleRepository:
         )
 
     def registrar_venta(self, venta: Venta, id_usuario: Optional[int] = None) -> int:
-        """
-        Persiste la venta de forma atómica (todo o nada):
-        cabecera, detalles, descuento de insumos por receta y auditoría.
-        Cualquier fallo provoca rollback completo.
-        """
         venta.validar()
         if not venta.detalles:
             raise ValidacionError("La venta debe contener al menos un producto.")

@@ -22,8 +22,6 @@ from src.repositories.supply_repository import SupplyRepository
 
 @dataclass
 class ItemVenta:
-    """Línea de comanda: producto (o topping, que también es un producto) y cantidad."""
-
     id_producto: int
     cantidad: int = 1
 
@@ -73,7 +71,6 @@ class POSService:
         return detalles
 
     def _verificar_stock(self, detalles: List[DetalleVenta]) -> None:
-        """Comprobación preventiva agregando el consumo total por insumo."""
         requerido: Dict[int, float] = {}
         for detalle in detalles:
             for receta in self._recipe_repo.obtener_receta_por_producto(detalle.id_producto):
@@ -93,7 +90,6 @@ class POSService:
                 )
 
     def calcular_total(self, items: List[ItemVenta]) -> float:
-        """Calcula el total de una comanda con los precios vigentes (para mostrar en UI)."""
         if not items:
             raise ValidacionError("La comanda debe contener al menos un producto.")
         venta: Venta = Venta()

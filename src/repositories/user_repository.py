@@ -58,7 +58,7 @@ class UserRepository:
                     usuario.estado,
                 ),
             )
-            return cursor.lastrowid  # type: ignore[return-value]
+            return cursor.lastrowid
 
     def actualizar_usuario(self, usuario: Usuario) -> bool:
         if not usuario.id_usuario:
