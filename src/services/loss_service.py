@@ -90,7 +90,7 @@ class LossService:
             cantidad=cantidad,
             motivo=motivo.strip(),
             fecha_hora=fecha_hora,
-            id_usuario=autor.id_usuario,  # type: ignore[arg-type]
+            id_usuario=autor.id_usuario,
         )
 
     def obtener_merma_por_id(self, id_merma: int) -> Optional[Merma]:

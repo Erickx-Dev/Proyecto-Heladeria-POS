@@ -9,7 +9,6 @@ from src.domain.audit import AuditoriaLog
 
 
 class AuditRepository:
-    """Repositorio de solo inserción y consulta sobre AuditoriaLog (inalterable)."""
 
     def __init__(self, db_path: Optional[Union[str, Path]] = None) -> None:
         self._db_path: Optional[Union[str, Path]] = db_path
@@ -27,7 +26,6 @@ class AuditRepository:
 
     @staticmethod
     def insertar_en_conexion(conn: sqlite3.Connection, log: AuditoriaLog) -> int:
-        """Inserta un log dentro de una transacción ya abierta (para operaciones atómicas)."""
         log.validar()
         cursor = conn.execute(
             "INSERT INTO AuditoriaLog (id_usuario, accion, modulo, fecha_hora, detalles) "
