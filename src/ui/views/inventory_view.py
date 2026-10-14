@@ -188,7 +188,7 @@ class InventoryView(ctk.CTkFrame):
                     autor=self._usuario,
                     nombre=nom,
                     unidad_medida=uni,
-                    stock_inicial=ini,
+                    stock_actual=ini,
                     stock_minimo=smin,
                 )
                 modal.grab_release()

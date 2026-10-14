@@ -14,7 +14,7 @@ Todos los componentes deben consumir estos valores centralizados en `src/ui/them
 
 | Token | Valor HEX | Uso / Semántica |
 | :--- | :--- | :--- |
-| `COLOR_FONDO_VENTANA` | `#2B2E36` | Fondo general de la aplicación (grafito cálido neutro, más claro y sin tinte azul). |
+| `COLOR_FONDO_VENTANA` | `#FFFFFF` | Fondo general de la aplicación (blanco puro limpio para contraste con paneles carbón y sidebar). |
 | `COLOR_SIDEBAR` | `#212328` | Barra lateral de navegación en grafito oscuro sobrio. |
 | `COLOR_SUPERFICIE` | `#363A44` | Fondo de paneles, tarjetas de producto, comanda y tablas (carbón suave de alto contraste). |
 | `COLOR_SUPERFICIE_HOVER` | `#434855` | Estado hover de tarjetas, filas de tabla y contenedores interactivos. |
@@ -104,3 +104,16 @@ Estructura de dos columnas divididas:
 * Permisos automáticos:
   * **Empleado:** Muestra solo *POS / Venta* y *Caja / Turno*.
   * **Administrador:** Muestra *POS*, *Caja*, *Catálogo*, *Inventario*, *Mermas*, *Gastos*, *Reportes*, *Usuarios* y *Respaldo*.
+
+---
+
+## 6. Pantalla de Bienvenida y Autenticación (`LoginView`)
+
+* **Fondo Fotográfico:** Fotografía ambiental de alta resolución de la heladería artesanal (`assets/login_bg.jpg`) con redimensionamiento dinámico y recorte proporcional (*cover*).
+* **Filtro de Contraste:** Atenuación sutil al 72% de brillo para garantizar que los elementos de texto y la tarjeta resalten con gran elegibilidad.
+* **Tarjeta de Acceso Centrada:**
+  * Fondo: Carbón oscuro `#181B22` con `corner_radius = 20`.
+  * Marco: Filete doble `border_width = 2` en Dorado Artesanal `#E5B869`.
+  * Logotipo: `🍨 HELA-POS` en Dorado `#E5B869`.
+  * Campos de Entrada: `#242832` con tipografía blanca y bordes refinados.
+  * Botón de Acceso: Frambuesa Pastel `#FF5C8D` con hover `#E04876`.

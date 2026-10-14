@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-COLOR_FONDO_VENTANA: str = "#2B2E36"
+COLOR_FONDO_VENTANA: str = "#FFFFFF"
 COLOR_SIDEBAR: str = "#212328"
 COLOR_SUPERFICIE: str = "#363A44"
 COLOR_SUPERFICIE_HOVER: str = "#434855"
