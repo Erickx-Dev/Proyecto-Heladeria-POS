@@ -202,19 +202,19 @@ flowchart TD
 *Objetivo: Consolidar las estadísticas de negocio, la copia de seguridad física y la interfaz visual modular.*  
 *Requerimientos IEEE 830 cubiertos: **RF12** (Reportes), **RF15** (Respaldo Local), **RNF01** (< 200 MB RAM), **RNF03** (Usabilidad).*
 
-- [ ] **6.1. Servicio de Reportes Financieros (`src/services/report_service.py`)**
+- [x] **6.1. Servicio de Reportes Financieros (`src/services/report_service.py`)**
   - Consolidación de ingresos por ventas brutas y netas (descontando gastos menores).
   - Reportes filtrables: Diario, Semanal y Mensual.
   - Ranking de productos más vendidos y sabores de helado de mayor rotación.
-- [ ] **6.2. Módulo de Copia de Seguridad Local (`database/backup.py`)**
+- [x] **6.2. Módulo de Copia de Seguridad Local (`database/backup.py`)**
   - Exportación con un solo clic de `heladeria.db` hacia una unidad extraíble USB o carpeta de destino.
   - Generación de nombre con timestamp (`heladeria_backup_YYYYMMDD_HHMMSS.db`).
-- [ ] **6.3. Componentes Visuales Reutilizables con CustomTkinter (`src/ui/components/`)**
+- [x] **6.3. Componentes Visuales Reutilizables con CustomTkinter (`src/ui/components/`)**
   - Barra lateral de navegación (`SidebarNavigation`).
   - Cuadrícula táctil de catálogo para mostrador (`ProductGrid`).
   - Tabla de comanda interactiva (`CartView`).
   - Diálogo modal de cobro y cálculo de devuelta (`PaymentModal`).
-- [ ] **6.4. Vistas del Sistema (`src/ui/views/`)**
+- [x] **6.4. Vistas del Sistema (`src/ui/views/`)**
   - `LoginView`: Pantalla de bienvenida y autenticación (RF01).
   - `CashTurnView`: Apertura y arqueo conciliado de caja (RF02, RF11).
   - `POSView`: Terminal ágil de comandas en mostrador (RF03, RF04, RF05).
@@ -223,9 +223,9 @@ flowchart TD
   - `ExpenseView`: Registro de gastos de caja menor (RF10).
   - `ReportsView`: Estadísticas y ganancias para Administrador (RF12).
   - `UsersView`: Gestión de personal y contraseñas (RF13).
-- [ ] **6.5. Punto de Entrada Principal (`main.py`)**
+- [x] **6.5. Punto de Entrada Principal (`main.py`)**
   - Inicialización limpia, verificación de integridad de base de datos y arranque de la ventana CustomTkinter.
-- [ ] **6.6. Verificación de Restricciones Operativas**
+- [x] **6.6. Verificación de Restricciones Operativas**
   - Validación de consumo de RAM $< 200\text{ MB}$ con destrucción explícita de vistas (`destroy()`).
   - Latencia de respuesta $< 0.3\text{ s}$ en consultas de catálogo y cobro.
 
