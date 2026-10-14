@@ -60,7 +60,14 @@ class POSView(ctk.CTkFrame):
         self._crear_cuerpo()
 
     def _crear_barra_superior(self) -> None:
-        bar = ctk.CTkFrame(self, fg_color=COLOR_SUPERFICIE, corner_radius=RADIO_PANEL, height=54)
+        bar = ctk.CTkFrame(
+            self,
+            fg_color=COLOR_SUPERFICIE,
+            corner_radius=RADIO_PANEL,
+            height=54,
+            border_width=1,
+            border_color=COLOR_BORDE_SUAVE,
+        )
         bar.grid(row=0, column=0, columnspan=2, padx=12, pady=(12, 8), sticky="ew")
         bar.grid_columnconfigure(0, weight=1)
 

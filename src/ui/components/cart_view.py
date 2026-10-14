@@ -234,6 +234,8 @@ class CartView(ctk.CTkFrame):
                 self._scroll_items,
                 fg_color=COLOR_SUPERFICIE_HOVER,
                 corner_radius=RADIO_TARJETA,
+                border_width=1,
+                border_color=COLOR_BORDE_SUAVE,
             )
             fila.pack(fill="x", pady=4)
             fila.grid_columnconfigure(0, weight=1)
@@ -260,6 +262,7 @@ class CartView(ctk.CTkFrame):
                 font=FUENTE_BOTON,
                 fg_color=COLOR_BOTON_SECUNDARIO,
                 hover_color=COLOR_BOTON_SECUNDARIO_HOVER,
+                text_color=COLOR_TEXTO_TITULO,
                 command=lambda p=pid: self.modificar_cantidad(p, -1),
             )
             btn_menos.pack(side="left", padx=2)
@@ -282,6 +285,7 @@ class CartView(ctk.CTkFrame):
                 font=FUENTE_BOTON,
                 fg_color=COLOR_BOTON_SECUNDARIO,
                 hover_color=COLOR_BOTON_SECUNDARIO_HOVER,
+                text_color=COLOR_TEXTO_TITULO,
                 command=lambda p=pid: self.modificar_cantidad(p, 1),
             )
             btn_mas.pack(side="left", padx=2)

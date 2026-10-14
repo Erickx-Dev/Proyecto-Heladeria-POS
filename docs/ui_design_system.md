@@ -2,36 +2,36 @@
 
 > **Documento:** `docs/ui_design_system.md`  
 > **Aprobado por el Tech Lead:** Erickson Sojo  
-> **Tema:** *Heladería Artesanal Grafito Cálido & Oro (Carbón Suave, Frambuesa Pastel y Detalles en Oro Artesanal)*  
-> **Framework Base:** `customtkinter` (Python 3)  
-> **Filosofía Visual:** Experiencia de mostrador refinada, moderna y ágil para el día a día en la heladería, con fondos neutros en grafito cálido libre de tinte azulado y acentos dorados artesanales que aportan un toque premium y profesional.
+> **Tema:** *Light Mode Moderno (Blanco Puro & Gris Nube con Acentos en Oro Artesanal y Frambuesa)*  
+> **Framework Base:** `customtkinter` (Python 3, modo de apariencia `light`)  
+> **Filosofía Visual:** Experiencia de mostrador luminosa, fresca, moderna y 100% armónica, eliminando contrastes discordantes mediante fondo gris nube suave, tarjetas blancas con bordes sutiles y detalles premium en oro y frambuesa.
 
 ---
 
-## 1. Tokens de Color (Paleta Oficial)
+## 1. Tokens de Color (Paleta Oficial Light Mode)
 
-Todos los componentes deben consumir estos valores centralizados en `src/ui/theme.py`, evitando colores fijos sueltos en el código.
+Todos los componentes consumen estos valores centralizados en `src/ui/theme.py`:
 
 | Token | Valor HEX | Uso / Semántica |
 | :--- | :--- | :--- |
-| `COLOR_FONDO_VENTANA` | `#FFFFFF` | Fondo general de la aplicación (blanco puro limpio para contraste con paneles carbón y sidebar). |
-| `COLOR_SIDEBAR` | `#212328` | Barra lateral de navegación en grafito oscuro sobrio. |
-| `COLOR_SUPERFICIE` | `#363A44` | Fondo de paneles, tarjetas de producto, comanda y tablas (carbón suave de alto contraste). |
-| `COLOR_SUPERFICIE_HOVER` | `#434855` | Estado hover de tarjetas, filas de tabla y contenedores interactivos. |
-| `COLOR_BORDE_SUAVE` | `#4A4F5C` | Líneas divisorias, bordes sutiles de paneles y cajas de texto (gris neutro). |
-| `COLOR_BORDE_DORADO` | `#E5B869` | Filetes y bordes destacados en oro artesanal. |
-| **`COLOR_DORADO_PREMIUM`** | `#E5B869` | **Dorado cálido artesanal:** categoría activa, botón activo de navegación, botón "+ Agregar", precios y totales. |
-| **`COLOR_DORADO_HOVER`**   | `#F7C978` | Hover en elementos con acabado dorado. |
-| **`COLOR_DORADO_TEXTO_OSCURO`** | `#1C1E22` | Texto oscuro de máxima legibilidad y contraste sobre botones de fondo dorado. |
-| **`COLOR_COBRO_FRAMBUESA`**| `#FF5C8D` | **Botón de Cobrar y acciones principales de alta prioridad.** |
-| `COLOR_COBRO_HOVER`       | `#E04876` | Hover del botón de cobro. |
-| `COLOR_EXITO`              | `#06D6A0` | Verde menta para estados activos, cuadre de caja exacto y ventas guardadas. |
-| `COLOR_PELIGRO`            | `#EF476F` | Rojo frambuesa intenso para eliminar ítems, mermas, cierres y alertas críticas. |
-| `COLOR_TEXTO_TITULO`       | `#FFFFFF` | Blanco puro para encabezados y nombres de producto. |
-| `COLOR_TEXTO_CUERPO`       | `#E1E4EA` | Texto estándar de lectura (alta legibilidad contra fondo carbón). |
-| `COLOR_TEXTO_MUTED`        | `#9EA5B3` | Texto secundario, unidades de medida y marcas de agua. |
-| `COLOR_BOTON_SECUNDARIO`   | `#3D424E` | Fondo de botones secundarios y controles de cantidad. |
-| `COLOR_BOTON_SECUNDARIO_HOVER` | `#4D5363` | Hover de botones secundarios. |
+| `COLOR_FONDO_VENTANA` | `#F4F6F9` | Fondo general de la aplicación (gris nube suave, evita deslumbramientos). |
+| `COLOR_SIDEBAR` | `#FFFFFF` | Barra lateral de navegación en blanco puro con divisor derecho. |
+| `COLOR_SUPERFICIE` | `#FFFFFF` | Fondo de paneles, tarjetas de producto, comanda y tablas. |
+| `COLOR_SUPERFICIE_HOVER` | `#F8FAFC` | Estado hover de tarjetas, filas de tabla y contenedores interactivos. |
+| `COLOR_BORDE_SUAVE` | `#E2E8F0` | Líneas divisorias y bordes sutiles de paneles y tarjetas. |
+| `COLOR_BORDE_DORADO` | `#D97706` | Filetes y bordes destacados en oro artesanal. |
+| **`COLOR_DORADO_PREMIUM`** | `#D97706` | **Dorado cálido artesanal:** categoría activa, botón activo de navegación, precios y totales. |
+| **`COLOR_DORADO_HOVER`**   | `#B45309` | Hover en elementos con acabado dorado. |
+| **`COLOR_DORADO_TEXTO_OSCURO`** | `#FFFFFF` | Texto de contraste sobre botones con fondo dorado. |
+| **`COLOR_COBRO_FRAMBUESA`**| `#E11D48` | **Botón de Cobro y llamadas a la acción principales.** |
+| `COLOR_COBRO_HOVER`       | `#BE123C` | Hover del botón de cobro. |
+| `COLOR_EXITO`              | `#059669` | Verde esmeralda para estados activos y cuadres de caja. |
+| `COLOR_PELIGRO`            | `#DC2626` | Rojo carmesí para eliminar ítems, alertas y mermas. |
+| `COLOR_TEXTO_TITULO`       | `#0F172A` | Azul pizarra oscuro para títulos y encabezados de alta legibilidad. |
+| `COLOR_TEXTO_CUERPO`       | `#1E293B` | Texto estándar de lectura. |
+| `COLOR_TEXTO_MUTED`        | `#64748B` | Texto secundario, unidades de medida y marcas de agua. |
+| `COLOR_BOTON_SECUNDARIO`   | `#F1F5F9` | Fondo de botones secundarios y controles de cantidad. |
+| `COLOR_BOTON_SECUNDARIO_HOVER` | `#E2E8F0` | Hover de botones secundarios. |
 
 ---
 

@@ -46,7 +46,15 @@ class SidebarNavigation(ctk.CTkFrame):
         on_logout: Callable[[], None],
         **kwargs,
     ) -> None:
-        super().__init__(master, fg_color=COLOR_SIDEBAR, corner_radius=0, width=220, **kwargs)
+        super().__init__(
+            master,
+            fg_color=COLOR_SIDEBAR,
+            corner_radius=0,
+            width=220,
+            border_width=1,
+            border_color=COLOR_BORDE_SUAVE,
+            **kwargs,
+        )
         self._usuario: Usuario = usuario
         self._on_navigate: Callable[[str], None] = on_navigate
         self._on_logout: Callable[[], None] = on_logout
@@ -110,7 +118,13 @@ class SidebarNavigation(ctk.CTkFrame):
             fila += 1
 
     def _crear_pie_usuario(self) -> None:
-        pie = ctk.CTkFrame(self, fg_color=COLOR_SUPERFICIE, corner_radius=RADIO_BOTON)
+        pie = ctk.CTkFrame(
+            self,
+            fg_color="#F8FAFC",
+            corner_radius=RADIO_BOTON,
+            border_width=1,
+            border_color=COLOR_BORDE_SUAVE,
+        )
         pie.grid(row=3, column=0, padx=10, pady=12, sticky="ew")
 
         rol_txt = "Administrador" if self._usuario.es_administrador() else "Empleado"
@@ -153,7 +167,7 @@ class SidebarNavigation(ctk.CTkFrame):
         for k, btn in self._botones.items():
             if k == clave:
                 btn.configure(
-                    fg_color=COLOR_SUPERFICIE_HOVER,
+                    fg_color="#FEF3C7",
                     text_color=COLOR_DORADO_PREMIUM,
                     border_width=1,
                     border_color=COLOR_DORADO_PREMIUM,

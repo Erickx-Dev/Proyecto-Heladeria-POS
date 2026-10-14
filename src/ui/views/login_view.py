@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Callable, Optional
 import customtkinter as ctk
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageEnhance, ImageFilter
 
 from src.core.exceptions import HeladeriaPOSException
 from src.domain.user import Usuario
@@ -14,8 +14,6 @@ from src.ui.theme import (
     COLOR_COBRO_HOVER,
     COLOR_DORADO_PREMIUM,
     COLOR_PELIGRO,
-    COLOR_TEXTO_MUTED,
-    COLOR_TEXTO_TITULO,
     FUENTE_BOTON,
     FUENTE_FAMILIA,
     FUENTE_MUTED,
@@ -24,7 +22,6 @@ from src.ui.theme import (
     FUENTE_TITULO_GRANDE,
     RADIO_BOTON,
     RADIO_ENTRY,
-    RADIO_PANEL,
 )
 
 
@@ -41,7 +38,9 @@ class LoginView(ctk.CTkFrame):
         self._auth_service: AuthService = auth_service
         self._on_login_success: Callable[[Usuario], None] = on_login_success
 
-        self._bg_path: Path = Path(__file__).resolve().parents[3] / "assets" / "login_bg.jpg"
+        base_dir = Path(__file__).resolve().parents[3]
+        self._bg_path_hd: Path = base_dir / "assets" / "login_bg_hd.jpg"
+        self._bg_path_std: Path = base_dir / "assets" / "login_bg.jpg"
         self._original_image: Optional[Image.Image] = None
         self._bg_ctk_image: Optional[ctk.CTkImage] = None
         self._last_w: int = 0
@@ -54,27 +53,35 @@ class LoginView(ctk.CTkFrame):
         self._construir_formulario()
 
         self.bind("<Configure>", self._al_redimensionar)
+        self.after(50, lambda: self._actualizar_tamano(1200, 750))
 
     def _cargar_imagen_fondo(self) -> None:
-        if self._bg_path.exists():
+        path = self._bg_path_hd if self._bg_path_hd.exists() else self._bg_path_std
+        if path.exists():
             try:
-                raw_img = Image.open(self._bg_path)
+                raw_img = Image.open(path)
                 enhancer = ImageEnhance.Brightness(raw_img)
-                self._original_image = enhancer.enhance(0.72)
+                self._original_image = enhancer.enhance(0.70)
             except Exception:
                 self._original_image = None
 
     def _al_redimensionar(self, event=None) -> None:
-        if self._original_image is None:
+        if self._original_image is None or event is None:
+            return
+        if event.widget != self:
             return
 
-        w = self.winfo_width()
-        h = self.winfo_height()
-
-        if w <= 100 or h <= 100:
+        w, h = event.width, event.height
+        if w <= 200 or h <= 200:
             return
 
         if abs(w - self._last_w) < 40 and abs(h - self._last_h) < 40:
+            return
+
+        self._actualizar_tamano(w, h)
+
+    def _actualizar_tamano(self, w: int, h: int) -> None:
+        if self._original_image is None or w <= 0 or h <= 0:
             return
 
         self._last_w = w
@@ -103,8 +110,8 @@ class LoginView(ctk.CTkFrame):
             fg_color="#181B22",
             corner_radius=20,
             border_width=2,
-            border_color=COLOR_DORADO_PREMIUM,
-            width=400,
+            border_color="#D97706",
+            width=430,
         )
         tarjeta.place(relx=0.5, rely=0.5, anchor="center")
         tarjeta.grid_columnconfigure(0, weight=1)
@@ -112,29 +119,29 @@ class LoginView(ctk.CTkFrame):
         lbl_logo = ctk.CTkLabel(
             tarjeta,
             text="🍨 HELA-POS",
-            font=FUENTE_TITULO_GRANDE,
-            text_color=COLOR_DORADO_PREMIUM,
+            font=(FUENTE_FAMILIA, 24, "bold"),
+            text_color="#F59E0B",
         )
-        lbl_logo.pack(padx=28, pady=(32, 4))
+        lbl_logo.pack(padx=32, pady=(32, 4))
 
         lbl_sub = ctk.CTkLabel(
             tarjeta,
             text="Heladería Artesanal • Sistema de Gestión y POS",
             font=FUENTE_MUTED,
-            text_color=COLOR_TEXTO_MUTED,
+            text_color="#94A3B8",
         )
-        lbl_sub.pack(padx=28, pady=(0, 20))
+        lbl_sub.pack(padx=32, pady=(0, 20))
 
-        divisor = ctk.CTkFrame(tarjeta, fg_color=COLOR_BORDE_SUAVE, height=1)
-        divisor.pack(fill="x", padx=28, pady=(0, 18))
+        divisor = ctk.CTkFrame(tarjeta, fg_color="#334155", height=1)
+        divisor.pack(fill="x", padx=32, pady=(0, 18))
 
         ctk.CTkLabel(
             tarjeta,
             text="Usuario:",
             font=FUENTE_SUBTITULO,
-            text_color=COLOR_TEXTO_TITULO,
+            text_color="#F8FAFC",
             anchor="w",
-        ).pack(fill="x", padx=32, pady=(4, 2))
+        ).pack(fill="x", padx=36, pady=(4, 2))
 
         self._entry_user = ctk.CTkEntry(
             tarjeta,
@@ -143,19 +150,19 @@ class LoginView(ctk.CTkFrame):
             height=42,
             corner_radius=RADIO_ENTRY,
             fg_color="#242832",
-            border_color=COLOR_BORDE_SUAVE,
-            text_color=COLOR_TEXTO_TITULO,
+            border_color="#475569",
+            text_color="#F8FAFC",
         )
-        self._entry_user.pack(fill="x", padx=32, pady=(0, 12))
+        self._entry_user.pack(fill="x", padx=36, pady=(0, 12))
         self._entry_user.bind("<Return>", lambda e: self._entry_pass.focus())
 
         ctk.CTkLabel(
             tarjeta,
             text="Contraseña:",
             font=FUENTE_SUBTITULO,
-            text_color=COLOR_TEXTO_TITULO,
+            text_color="#F8FAFC",
             anchor="w",
-        ).pack(fill="x", padx=32, pady=(4, 2))
+        ).pack(fill="x", padx=36, pady=(4, 2))
 
         self._entry_pass = ctk.CTkEntry(
             tarjeta,
@@ -165,10 +172,10 @@ class LoginView(ctk.CTkFrame):
             height=42,
             corner_radius=RADIO_ENTRY,
             fg_color="#242832",
-            border_color=COLOR_BORDE_SUAVE,
-            text_color=COLOR_TEXTO_TITULO,
+            border_color="#475569",
+            text_color="#F8FAFC",
         )
-        self._entry_pass.pack(fill="x", padx=32, pady=(0, 8))
+        self._entry_pass.pack(fill="x", padx=36, pady=(0, 8))
         self._entry_pass.bind("<Return>", lambda e: self._iniciar_sesion())
 
         self._lbl_error = ctk.CTkLabel(
@@ -176,9 +183,9 @@ class LoginView(ctk.CTkFrame):
             text="",
             font=FUENTE_TEXTO,
             text_color=COLOR_PELIGRO,
-            wraplength=330,
+            wraplength=340,
         )
-        self._lbl_error.pack(padx=28, pady=(4, 8))
+        self._lbl_error.pack(padx=32, pady=(4, 8))
 
         btn_login = ctk.CTkButton(
             tarjeta,
@@ -188,10 +195,10 @@ class LoginView(ctk.CTkFrame):
             corner_radius=RADIO_BOTON,
             fg_color=COLOR_COBRO_FRAMBUESA,
             hover_color=COLOR_COBRO_HOVER,
-            text_color=COLOR_TEXTO_TITULO,
+            text_color="#FFFFFF",
             command=self._iniciar_sesion,
         )
-        btn_login.pack(fill="x", padx=32, pady=(4, 32))
+        btn_login.pack(fill="x", padx=36, pady=(4, 34))
 
     def _iniciar_sesion(self) -> None:
         username = self._entry_user.get().strip()

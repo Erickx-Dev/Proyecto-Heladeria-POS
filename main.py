@@ -23,7 +23,7 @@ def main() -> None:
 
     inicializar_base_de_datos(db_path=db_path)
 
-    ctk.set_appearance_mode("dark")
+    ctk.set_appearance_mode("light")
     ctk.set_default_color_theme("blue")
 
     app = HeladeriaApp(db_path=db_path)

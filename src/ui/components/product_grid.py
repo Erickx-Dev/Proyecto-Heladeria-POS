@@ -86,11 +86,11 @@ class ProductCard(ctk.CTkFrame):
             font=FUENTE_BOTON,
             height=32,
             corner_radius=RADIO_BOTON,
-            fg_color=COLOR_BOTON_SECUNDARIO,
-            hover_color=COLOR_SUPERFICIE_HOVER,
-            text_color=COLOR_DORADO_PREMIUM,
+            fg_color="#FFFBEB",
+            hover_color="#FEF3C7",
+            text_color="#B45309",
             border_width=1,
-            border_color=COLOR_DORADO_PREMIUM,
+            border_color="#D97706",
             command=lambda: self._on_add(self._producto),
         )
         btn_agregar.grid(row=3, column=0, padx=10, pady=(0, 10), sticky="ew")
