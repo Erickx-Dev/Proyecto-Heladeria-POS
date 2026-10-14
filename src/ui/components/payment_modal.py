@@ -12,6 +12,7 @@ from src.ui.theme import (
     COLOR_COBRO_FRAMBUESA,
     COLOR_COBRO_HOVER,
     COLOR_DORADO_PREMIUM,
+    COLOR_DORADO_TEXTO_OSCURO,
     COLOR_EXITO,
     COLOR_FONDO_VENTANA,
     COLOR_PELIGRO,
@@ -137,7 +138,7 @@ class PaymentModal(ctk.CTkToplevel):
                 height=36,
                 corner_radius=RADIO_BOTON,
                 fg_color=COLOR_ACENTO_CYAN if clave == "EFECTIVO" else COLOR_BOTON_SECUNDARIO,
-                text_color="#141B24" if clave == "EFECTIVO" else COLOR_TEXTO_CUERPO,
+                text_color=COLOR_DORADO_TEXTO_OSCURO if clave == "EFECTIVO" else COLOR_TEXTO_CUERPO,
                 hover_color=COLOR_ACENTO_CELESTE,
                 command=lambda k=clave: self._seleccionar_metodo(k),
             )
@@ -249,7 +250,7 @@ class PaymentModal(ctk.CTkToplevel):
             if clave == metodo:
                 btn.configure(
                     fg_color=COLOR_ACENTO_CYAN,
-                    text_color="#141B24",
+                    text_color=COLOR_DORADO_TEXTO_OSCURO,
                 )
             else:
                 btn.configure(

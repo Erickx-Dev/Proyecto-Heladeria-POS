@@ -2,9 +2,9 @@
 
 > **Documento:** `docs/ui_design_system.md`  
 > **Aprobado por el Tech Lead:** Erickson Sojo  
-> **Tema:** *Heladería Artesanal Fresca & Dorada (Celeste, Frambuesa Pastel y Detalles Dorados)*  
+> **Tema:** *Heladería Artesanal Grafito Cálido & Oro (Carbón Suave, Frambuesa Pastel y Detalles en Oro Artesanal)*  
 > **Framework Base:** `customtkinter` (Python 3)  
-> **Filosofía Visual:** Experiencia de mostrador fresca, moderna y ágil para el día a día en la heladería, con acentos dorados artesanales que aportan un toque premium y profesional.
+> **Filosofía Visual:** Experiencia de mostrador refinada, moderna y ágil para el día a día en la heladería, con fondos neutros en grafito cálido libre de tinte azulado y acentos dorados artesanales que aportan un toque premium y profesional.
 
 ---
 
@@ -14,21 +14,24 @@ Todos los componentes deben consumir estos valores centralizados en `src/ui/them
 
 | Token | Valor HEX | Uso / Semántica |
 | :--- | :--- | :--- |
-| `COLOR_FONDO_VENTANA` | `#1B2430` | Fondo general de la aplicación (azul marino grisáceo profundo). |
-| `COLOR_SUPERFICIE` | `#222E3D` | Fondo de paneles, tarjetas de producto, sidebar y tablas. |
-| `COLOR_SUPERFICIE_HOVER` | `#2C3B4E` | Estado hover de tarjetas, filas de tabla y contenedores interactivos. |
-| `COLOR_BORDE_SUAVE` | `#334458` | Líneas divisorias, bordes sutiles de paneles y cajas de texto. |
-| **`COLOR_ACENTO_CYAN`** | `#00F0FF` | Acento helado fresco: botones de filtro, selecciones activas y pestañas. |
-| **`COLOR_ACENTO_CELESTE`**| `#48CAE4` | Celeste suave: iconos, etiquetas informativas y estados secundarios. |
-| **`COLOR_DORADO_PREMIUM`** | `#E5B869` | **Dorado cálido artesanal:** insignias, cifras de dinero, títulos destacados y marcos de turno/caja. |
+| `COLOR_FONDO_VENTANA` | `#2B2E36` | Fondo general de la aplicación (grafito cálido neutro, más claro y sin tinte azul). |
+| `COLOR_SIDEBAR` | `#212328` | Barra lateral de navegación en grafito oscuro sobrio. |
+| `COLOR_SUPERFICIE` | `#363A44` | Fondo de paneles, tarjetas de producto, comanda y tablas (carbón suave de alto contraste). |
+| `COLOR_SUPERFICIE_HOVER` | `#434855` | Estado hover de tarjetas, filas de tabla y contenedores interactivos. |
+| `COLOR_BORDE_SUAVE` | `#4A4F5C` | Líneas divisorias, bordes sutiles de paneles y cajas de texto (gris neutro). |
+| `COLOR_BORDE_DORADO` | `#E5B869` | Filetes y bordes destacados en oro artesanal. |
+| **`COLOR_DORADO_PREMIUM`** | `#E5B869` | **Dorado cálido artesanal:** categoría activa, botón activo de navegación, botón "+ Agregar", precios y totales. |
 | **`COLOR_DORADO_HOVER`**   | `#F7C978` | Hover en elementos con acabado dorado. |
+| **`COLOR_DORADO_TEXTO_OSCURO`** | `#1C1E22` | Texto oscuro de máxima legibilidad y contraste sobre botones de fondo dorado. |
 | **`COLOR_COBRO_FRAMBUESA`**| `#FF5C8D` | **Botón de Cobrar y acciones principales de alta prioridad.** |
 | `COLOR_COBRO_HOVER`       | `#E04876` | Hover del botón de cobro. |
 | `COLOR_EXITO`              | `#06D6A0` | Verde menta para estados activos, cuadre de caja exacto y ventas guardadas. |
 | `COLOR_PELIGRO`            | `#EF476F` | Rojo frambuesa intenso para eliminar ítems, mermas, cierres y alertas críticas. |
 | `COLOR_TEXTO_TITULO`       | `#FFFFFF` | Blanco puro para encabezados y nombres de producto. |
-| `COLOR_TEXTO_CUERPO`       | `#D8E2EC` | Texto estándar de lectura (alta legibilidad contra fondo azul grisáceo). |
-| `COLOR_TEXTO_MUTED`        | `#8A9BB0` | Texto secundario, unidades de medida y marcas de agua. |
+| `COLOR_TEXTO_CUERPO`       | `#E1E4EA` | Texto estándar de lectura (alta legibilidad contra fondo carbón). |
+| `COLOR_TEXTO_MUTED`        | `#9EA5B3` | Texto secundario, unidades de medida y marcas de agua. |
+| `COLOR_BOTON_SECUNDARIO`   | `#3D424E` | Fondo de botones secundarios y controles de cantidad. |
+| `COLOR_BOTON_SECUNDARIO_HOVER` | `#4D5363` | Hover de botones secundarios. |
 
 ---
 

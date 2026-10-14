@@ -154,9 +154,9 @@ class SidebarNavigation(ctk.CTkFrame):
             if k == clave:
                 btn.configure(
                     fg_color=COLOR_SUPERFICIE_HOVER,
-                    text_color=COLOR_ACENTO_CYAN,
+                    text_color=COLOR_DORADO_PREMIUM,
                     border_width=1,
-                    border_color=COLOR_ACENTO_CYAN,
+                    border_color=COLOR_DORADO_PREMIUM,
                 )
             else:
                 btn.configure(

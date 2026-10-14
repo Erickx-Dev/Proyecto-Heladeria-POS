@@ -6,11 +6,12 @@ import customtkinter as ctk
 from src.domain.category import Categoria
 from src.domain.product import Producto
 from src.ui.theme import (
-    COLOR_ACENTO_CELESTE,
-    COLOR_ACENTO_CYAN,
     COLOR_BORDE_SUAVE,
     COLOR_BOTON_SECUNDARIO,
     COLOR_BOTON_SECUNDARIO_HOVER,
+    COLOR_DORADO_HOVER,
+    COLOR_DORADO_PREMIUM,
+    COLOR_DORADO_TEXTO_OSCURO,
     COLOR_SUPERFICIE,
     COLOR_SUPERFICIE_HOVER,
     COLOR_TEXTO_CUERPO,
@@ -74,7 +75,7 @@ class ProductCard(ctk.CTkFrame):
             self,
             text=f"${self._producto.precio_venta:,.2f}",
             font=(FUENTE_FAMILIA, 15, "bold"),
-            text_color=COLOR_ACENTO_CELESTE,
+            text_color=COLOR_DORADO_PREMIUM,
             anchor="w",
         )
         lbl_precio.grid(row=2, column=0, padx=12, pady=(4, 8), sticky="w")
@@ -87,9 +88,9 @@ class ProductCard(ctk.CTkFrame):
             corner_radius=RADIO_BOTON,
             fg_color=COLOR_BOTON_SECUNDARIO,
             hover_color=COLOR_SUPERFICIE_HOVER,
-            text_color=COLOR_ACENTO_CYAN,
+            text_color=COLOR_DORADO_PREMIUM,
             border_width=1,
-            border_color=COLOR_ACENTO_CYAN,
+            border_color=COLOR_DORADO_PREMIUM,
             command=lambda: self._on_add(self._producto),
         )
         btn_agregar.grid(row=3, column=0, padx=10, pady=(0, 10), sticky="ew")
@@ -171,9 +172,9 @@ class ProductGrid(ctk.CTkFrame):
             height=32,
             font=FUENTE_BOTON,
             corner_radius=RADIO_BOTON,
-            fg_color=COLOR_ACENTO_CYAN,
-            text_color="#141B24",
-            hover_color=COLOR_ACENTO_CELESTE,
+            fg_color=COLOR_DORADO_PREMIUM,
+            text_color=COLOR_DORADO_TEXTO_OSCURO,
+            hover_color=COLOR_DORADO_HOVER,
             command=lambda: self._filtrar_categoria(None),
         )
         btn_todos.pack(side="left", padx=4)
@@ -219,8 +220,8 @@ class ProductGrid(ctk.CTkFrame):
         for cid, btn in self._botones_cat.items():
             if cid == id_categoria:
                 btn.configure(
-                    fg_color=COLOR_ACENTO_CYAN,
-                    text_color="#141B24",
+                    fg_color=COLOR_DORADO_PREMIUM,
+                    text_color=COLOR_DORADO_TEXTO_OSCURO,
                     border_width=0,
                 )
             else:
