@@ -202,11 +202,11 @@ flowchart TD
 *Objetivo: Consolidar las estadísticas de negocio, la copia de seguridad física y la interfaz visual modular.*  
 *Requerimientos IEEE 830 cubiertos: **RF12** (Reportes), **RF15** (Respaldo Local), **RNF01** (< 200 MB RAM), **RNF03** (Usabilidad).*
 
-- [ ] **6.1. Servicio de Reportes Financieros (`src/services/report_service.py`)**
+- [x] **6.1. Servicio de Reportes Financieros (`src/services/report_service.py`)**
   - Consolidación de ingresos por ventas brutas y netas (descontando gastos menores).
   - Reportes filtrables: Diario, Semanal y Mensual.
   - Ranking de productos más vendidos y sabores de helado de mayor rotación.
-- [ ] **6.2. Módulo de Copia de Seguridad Local (`database/backup.py`)**
+- [x] **6.2. Módulo de Copia de Seguridad Local (`database/backup.py`)**
   - Exportación con un solo clic de `heladeria.db` hacia una unidad extraíble USB o carpeta de destino.
   - Generación de nombre con timestamp (`heladeria_backup_YYYYMMDD_HHMMSS.db`).
 - [ ] **6.3. Componentes Visuales Reutilizables con CustomTkinter (`src/ui/components/`)**
