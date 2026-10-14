@@ -53,7 +53,7 @@ class LoginView(ctk.CTkFrame):
         self._construir_formulario()
 
         self.bind("<Configure>", self._al_redimensionar)
-        self.after(50, lambda: self._actualizar_tamano(1200, 750))
+        self.after(60, self._ajustar_tamano_inicial)
 
     def _cargar_imagen_fondo(self) -> None:
         path = self._bg_path_hd if self._bg_path_hd.exists() else self._bg_path_std
@@ -65,17 +65,25 @@ class LoginView(ctk.CTkFrame):
             except Exception:
                 self._original_image = None
 
+    def _ajustar_tamano_inicial(self) -> None:
+        w = max(self.winfo_width(), self.master.winfo_width(), 1200)
+        h = max(self.winfo_height(), self.master.winfo_height(), 750)
+        self._actualizar_tamano(w, h)
+
     def _al_redimensionar(self, event=None) -> None:
-        if self._original_image is None or event is None:
-            return
-        if event.widget != self:
+        if self._original_image is None:
             return
 
-        w, h = event.width, event.height
+        w = self.winfo_width()
+        h = self.winfo_height()
+
+        if event is not None and event.widget == self:
+            w, h = event.width, event.height
+
         if w <= 200 or h <= 200:
             return
 
-        if abs(w - self._last_w) < 40 and abs(h - self._last_h) < 40:
+        if abs(w - self._last_w) < 15 and abs(h - self._last_h) < 15:
             return
 
         self._actualizar_tamano(w, h)
