@@ -1,0 +1,73 @@
+<mxfile host="app.diagrams.net" agent="Antigravity">
+  <diagram id="helapos-uml-diagram" name="Diagrama de Clases HELA-POS">
+    <mxGraphModel dx="845" dy="466" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="cls_CashService" parent="1" style="verticalAlign=top;align=center;overflow=fill;html=1;whiteSpace=wrap;fillColor=#E0E7FF;strokeColor=#3730A3;strokeWidth=2;rounded=0;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;CashService&lt;/b&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;- _cash_repo : CashRepository&lt;br/&gt;- _expense_repo : ExpenseRepository&lt;/div&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;- _registrar_auditoria(accion: str, id_usuario: int, detalles: str) : None&lt;br/&gt;+ abrir_turno(id_usuario: int, monto_inicial: float) : TurnoCaja&lt;br/&gt;+ obtener_saldo_disponible(id_caja: int) : float&lt;br/&gt;+ cerrar_turno(id_usuario: int, monto_fisico_real: float) : Arqueo&lt;/div&gt;" vertex="1">
+          <mxGeometry height="150" width="420" x="80" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_POSService" parent="1" style="verticalAlign=top;align=center;overflow=fill;html=1;whiteSpace=wrap;fillColor=#E0E7FF;strokeColor=#3730A3;strokeWidth=2;rounded=0;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;POSService&lt;/b&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;- _sale_repo : SaleRepository&lt;br/&gt;- _cash_repo : CashRepository&lt;br/&gt;- _product_repo : ProductRepository&lt;br/&gt;- _recipe_repo : RecipeRepository&lt;br/&gt;- _supply_repo : SupplyRepository&lt;/div&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;- _obtener_turno_abierto() : TurnoCaja&lt;br/&gt;- _verificar_stock(detalles: list[DetalleVenta]) : None&lt;br/&gt;+ calcular_total(items: list[ItemVenta]) : float&lt;br/&gt;+ registrar_venta(id_usuario: int, items: list[ItemVenta], metodo_pago: str, dinero_recibido: float) : Venta&lt;/div&gt;" vertex="1">
+          <mxGeometry height="190" width="520" x="660" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_TurnoCaja" parent="1" style="verticalAlign=top;align=center;overflow=fill;html=1;whiteSpace=wrap;fillColor=#DCFCE7;strokeColor=#166534;strokeWidth=2;rounded=0;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;TurnoCaja&lt;/b&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ id_caja : Optional[int]&lt;br/&gt;+ id_usuario : int&lt;br/&gt;+ fecha_apertura : str&lt;br/&gt;+ monto_inicial : float&lt;br/&gt;+ fecha_cierre : Optional[str]&lt;br/&gt;+ monto_final_real : Optional[float]&lt;br/&gt;+ diferencia : Optional[float]&lt;br/&gt;+ estado : str&lt;/div&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ esta_abierta() : bool&lt;br/&gt;+ cerrar(monto_final_real: float, diferencia: float) : None&lt;/div&gt;" vertex="1">
+          <mxGeometry height="200" width="340" x="120" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_Venta" parent="1" style="verticalAlign=top;align=center;overflow=fill;html=1;whiteSpace=wrap;fillColor=#DCFCE7;strokeColor=#166534;strokeWidth=2;rounded=0;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;Venta&lt;/b&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ id_venta : Optional[int]&lt;br/&gt;+ id_caja : int&lt;br/&gt;+ fecha_hora : str&lt;br/&gt;+ total : float&lt;br/&gt;+ metodo_pago : str&lt;br/&gt;+ dinero_recibido : float&lt;br/&gt;+ cambio : float&lt;br/&gt;+ detalles : list[DetalleVenta]&lt;/div&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ agregar_detalle(detalle: DetalleVenta) : None&lt;br/&gt;+ calcular_cambio() : float&lt;/div&gt;" vertex="1">
+          <mxGeometry height="200" width="310" x="600" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_DetalleVenta" parent="1" style="verticalAlign=top;align=center;overflow=fill;html=1;whiteSpace=wrap;fillColor=#DCFCE7;strokeColor=#166534;strokeWidth=2;rounded=0;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;DetalleVenta&lt;/b&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ id_detalle : Optional[int]&lt;br/&gt;+ id_venta : int&lt;br/&gt;+ id_producto : int&lt;br/&gt;+ cantidad : int&lt;br/&gt;+ precio_unitario : float&lt;br/&gt;+ subtotal : float&lt;/div&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ calcular_subtotal() : float&lt;/div&gt;" vertex="1">
+          <mxGeometry height="170" width="270" x="1100" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_Usuario" parent="1" style="verticalAlign=top;align=center;overflow=fill;html=1;whiteSpace=wrap;fillColor=#DCFCE7;strokeColor=#166534;strokeWidth=2;rounded=0;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;Usuario&lt;/b&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ id_usuario : Optional[int]&lt;br/&gt;+ nombre : str&lt;br/&gt;+ username : str&lt;br/&gt;- password_hash : str&lt;br/&gt;+ id_rol : int&lt;br/&gt;+ estado : int&lt;/div&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ es_administrador() : bool&lt;br/&gt;+ tiene_permiso(permiso: Permiso) : bool&lt;/div&gt;" vertex="1">
+          <mxGeometry height="175" width="280" x="150" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_Admin" parent="1" style="verticalAlign=top;align=center;overflow=fill;html=1;whiteSpace=wrap;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;rounded=0;" value="&lt;b style=&quot;font-size:13px;&quot;&gt;Administrador&lt;/b&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ id_rol = 1 (Acceso Total)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="65" width="170" x="100" y="900" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_Cajero" parent="1" style="verticalAlign=top;align=center;overflow=fill;html=1;whiteSpace=wrap;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;rounded=0;" value="&lt;b style=&quot;font-size:13px;&quot;&gt;Cajero&lt;/b&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ id_rol = 2 (Ventas y Caja)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="65" width="170" x="310" y="900" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_Producto" parent="1" style="verticalAlign=top;align=center;overflow=fill;html=1;whiteSpace=wrap;fillColor=#DCFCE7;strokeColor=#166534;strokeWidth=2;rounded=0;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;Producto&lt;/b&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ id_producto : Optional[int]&lt;br/&gt;+ codigo : str&lt;br/&gt;+ nombre : str&lt;br/&gt;+ precio_venta : float&lt;br/&gt;+ id_categoria : int&lt;br/&gt;+ estado : int&lt;/div&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ es_activo() : bool&lt;/div&gt;" vertex="1">
+          <mxGeometry height="170" width="270" x="1100" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_Receta" parent="1" style="verticalAlign=top;align=center;overflow=fill;html=1;whiteSpace=wrap;fillColor=#DCFCE7;strokeColor=#166534;strokeWidth=2;rounded=0;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;Receta&lt;/b&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ id_receta : Optional[int]&lt;br/&gt;+ id_producto : int&lt;br/&gt;+ id_insumo : int&lt;br/&gt;+ cantidad_necesaria : float&lt;/div&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ validar() : None&lt;/div&gt;" vertex="1">
+          <mxGeometry height="140" width="260" x="625" y="635" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_Insumo" parent="1" style="verticalAlign=top;align=center;overflow=fill;html=1;whiteSpace=wrap;fillColor=#DCFCE7;strokeColor=#166534;strokeWidth=2;rounded=0;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;Insumo&lt;/b&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ id_insumo : Optional[int]&lt;br/&gt;+ nombre : str&lt;br/&gt;+ unidad_medida : str&lt;br/&gt;+ stock_actual : float&lt;br/&gt;+ stock_minimo : float&lt;/div&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;div style=&quot;text-align:left;padding:4px 8px;font-family:monospace;font-size:11px;&quot;&gt;+ descontar(cantidad: float) : None&lt;br/&gt;+ esta_en_alerta_stock() : bool&lt;/div&gt;" vertex="1">
+          <mxGeometry height="165" width="280" x="615" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_Cash_Turno" edge="1" parent="1" source="cls_CashService" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;endFill=0;strokeWidth=1.5;" target="cls_TurnoCaja" value="administra (1 .. 0..*)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_POS_Venta" edge="1" parent="1" source="cls_POSService" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;endFill=0;strokeWidth=1.5;" target="cls_Venta" value="procesa (1 .. 0..*)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_Turno_Usuario" edge="1" parent="1" source="cls_TurnoCaja" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;endFill=0;strokeWidth=1.5;" target="cls_Usuario" value="pertenece a (0..* .. 1)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_Turno_Venta" edge="1" parent="1" source="cls_TurnoCaja" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=diamondThin;startFill=0;startSize=14;endArrow=open;endFill=0;strokeWidth=1.5;" target="cls_Venta" value="registra (1 .. 0..*)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_Venta_Detalle" edge="1" parent="1" source="cls_Venta" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=diamondThin;startFill=1;startSize=14;endArrow=open;endFill=0;strokeWidth=1.5;" target="cls_DetalleVenta" value="contiene (1 .. 1..*)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_Detalle_Producto" edge="1" parent="1" source="cls_DetalleVenta" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=diamondThin;startFill=0;startSize=14;endArrow=open;endFill=0;strokeWidth=1.5;" target="cls_Producto" value="incluye (0..* .. 1)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_Producto_Receta" edge="1" parent="1" source="cls_Producto" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=diamondThin;startFill=1;startSize=14;endArrow=open;endFill=0;strokeWidth=1.5;" target="cls_Receta" value="se prepara con (1 .. 1..*)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_Receta_Insumo" edge="1" parent="1" source="cls_Receta" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=diamondThin;startFill=0;startSize=14;endArrow=open;endFill=0;strokeWidth=1.5;" target="cls_Insumo" value="consume (0..* .. 1)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_Herencia_Admin" edge="1" parent="1" source="cls_Admin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=0;endSize=12;strokeWidth=1.5;" target="cls_Usuario" value="Es un">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_Herencia_Cajero" edge="1" parent="1" source="cls_Cajero" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=0;endSize=12;strokeWidth=1.5;" target="cls_Usuario" value="Es un">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
